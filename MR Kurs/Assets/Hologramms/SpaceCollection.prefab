@@ -5,10 +5,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 446484}
-  - 114: {fileID: 11442960}
+  - component: {fileID: 446484}
+  - component: {fileID: 114912566192429742}
   m_Layer: 0
   m_Name: SpaceCollection
   m_TagString: Untagged
@@ -29,21 +29,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &11442960
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 105440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4f9bf4f51078a749bc46c3e8fab3b31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spaceObjectPrefabs:
-  - {fileID: 198308, guid: f995e12b8f20f1f4392760587a83a926, type: 2}
-  - {fileID: 153042, guid: d6600ef2cde92244ca31967068aef193, type: 2}
-  - {fileID: 111532, guid: d8b2d9075f1e53540a54dd1a03f012d3, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -59,3 +44,18 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 105440}
   m_IsPrefabParent: 1
+--- !u!114 &114912566192429742
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03878dcf6c92be7479b20fa72d79bb31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spaceObjectPrefabs:
+  - {fileID: 1081987541910382, guid: f2b5439526dc2114a996067e4d3f037e, type: 2}
+  - {fileID: 1081987541910382, guid: f2b5439526dc2114a996067e4d3f037e, type: 2}
+  - {fileID: 1081987541910382, guid: f2b5439526dc2114a996067e4d3f037e, type: 2}

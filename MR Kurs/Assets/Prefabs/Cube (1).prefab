@@ -9,46 +9,46 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000010593991404}
+  m_RootGameObject: {fileID: 1081987541910382}
   m_IsPrefabParent: 1
---- !u!1 &1000010593991404
+--- !u!1 &1081987541910382
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4000012375631134}
-  - component: {fileID: 33000012042644992}
-  - component: {fileID: 65000010549037612}
-  - component: {fileID: 23000010797497162}
-  - component: {fileID: 114000011287056714}
+  - component: {fileID: 4547471315418490}
+  - component: {fileID: 33509549702102944}
+  - component: {fileID: 23929055215871412}
+  - component: {fileID: 65630422789367350}
+  - component: {fileID: 114454283760117530}
   m_Layer: 0
-  m_Name: SurfacePlane
+  m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000012375631134
+--- !u!4 &4547471315418490
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010593991404}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1081987541910382}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23000010797497162
+--- !u!23 &23929055215871412
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010593991404}
+  m_GameObject: {fileID: 1081987541910382}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -58,7 +58,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 474f0e0481d4aa14e92a5ada98042f3a, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
+  m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 0
@@ -78,43 +78,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33000012042644992
+--- !u!33 &33509549702102944
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010593991404}
+  m_GameObject: {fileID: 1081987541910382}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65000010549037612
+--- !u!65 &65630422789367350
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010593991404}
+  m_GameObject: {fileID: 1081987541910382}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114000011287056714
+  m_Size: {x: 1, y: 10.375483, z: 1}
+  m_Center: {x: 0, y: 4.6877394, z: 0}
+--- !u!114 &114454283760117530
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010593991404}
+  m_GameObject: {fileID: 1081987541910382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d29c05be38579034196d7b7692e52bc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 6aad8740fa353764494da163ba754018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaneThickness: 0.01
-  UpNormalThreshold: 0.9
-  FloorBuffer: 0.1
-  CeilingBuffer: 0.1
-  WallMaterial: {fileID: 2100000, guid: 496839ee4791ca340acba3dbee6b10ea, type: 2}
-  FloorMaterial: {fileID: 2100000, guid: 3c350543d08a6164c87f33f00f4c012b, type: 2}
-  CeilingMaterial: {fileID: 2100000, guid: 8cb7286b1d19b4d4993e5eb89ed3c3aa, type: 2}
-  TableMaterial: {fileID: 2100000, guid: 8fe2e17e21a817744a944c1f1c10b21a, type: 2}
-  UnknownMaterial: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  PlaneType: 16
+  selectable: 0
+  PlaceableBoundsMaterial: {fileID: 0}
+  NotPlaceableBoundsMaterial: {fileID: 0}
+  PlaceableShadowMaterial: {fileID: 0}
+  NotPlaceableShadowMaterial: {fileID: 0}
+  PlacementSurface: 1
+  PlacementPlane: 2
+  ChildrenToHide: []
