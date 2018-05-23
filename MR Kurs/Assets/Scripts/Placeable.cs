@@ -199,7 +199,7 @@ public class Placeable : MonoBehaviour
     /// <returns>
     /// True if the target position is valid for placing the object, otherwise false.
     /// </returns>
-    private bool ValidatePlacement(out Vector3 position, out Vector3 surfaceNormal)
+    public bool ValidatePlacement(out Vector3 position, out Vector3 surfaceNormal)
     {
         Vector3 raycastDirection = gameObject.transform.forward;
 
