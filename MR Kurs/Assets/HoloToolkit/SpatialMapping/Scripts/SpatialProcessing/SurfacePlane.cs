@@ -196,6 +196,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                     if (FloorMaterial != null)
                     {
                         renderer.material = FloorMaterial;
+                        gameObject.AddComponent<NavMeshSourceTag>(); //Boden wird automatisch als Navmesh erkannt
                     }
                     break;
                 case PlaneTypes.Table:
