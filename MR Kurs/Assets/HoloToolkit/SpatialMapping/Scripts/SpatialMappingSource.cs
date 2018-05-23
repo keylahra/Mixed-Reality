@@ -97,6 +97,7 @@ namespace HoloToolkit.Unity.SpatialMapping
             surfaceObject.Object = new GameObject(objectName, componentsRequiredForSurfaceMesh);
             surfaceObject.Object.transform.SetParent(parentObject);
             surfaceObject.Object.layer = SpatialMappingManager.Instance.PhysicsLayer;
+            surfaceObject.Object.AddComponent<NavMeshSourceTag>();
 
             surfaceObject.Filter = surfaceObject.Object.GetComponent<MeshFilter>();
             surfaceObject.Filter.sharedMesh = mesh;
