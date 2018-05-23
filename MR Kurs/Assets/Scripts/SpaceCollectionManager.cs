@@ -115,12 +115,6 @@ public class SpaceCollectionManager : Singleton<SpaceCollectionManager>
                 }
             }
 
-            // check if it is a valid placing position
-            Vector3 pos = new Vector3();
-            Vector3 surf = new Vector3();
-            GetComponent<Placeable>().ValidatePlacement(out pos, out surf);
-
-
             //Vector3 finalPosition = AdjustPositionWithSpatialMap(position, surfaceType);
             GameObject spaceObject = Instantiate(item, position, rotation) as GameObject;
             spaceObject.transform.parent = gameObject.transform;
