@@ -16,10 +16,12 @@ public class IceFloe : MonoBehaviour {
     }
 
     private bool userEntered = false;
+    public bool isVisible = true;
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        userEntered = true;
+        TriggerIceFloe();
     }
 
     void Start () {
@@ -28,10 +30,27 @@ public class IceFloe : MonoBehaviour {
 	
 
 	void Update () {
+
+        if (isVisible)
+        {
+            //GetComponent<MeshRenderer>().enabled = true;
+        }
+        else
+        {
+            //GetComponent<MeshRenderer>().enabled = false;
+        }
 		
 	}
 
+    void TriggerIceFloe()
+    {
+        // TODO: ice floe reacts to trigger (animation)
+    }
 
+    public void SetVisible(bool visible)
+    {
+        isVisible = visible;
+    }
 
     public int GetID()
     {
