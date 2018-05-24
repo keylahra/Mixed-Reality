@@ -8,27 +8,45 @@ public class IceFloe : MonoBehaviour {
 
     private int number;
 
-    private enum floeColor
-    {
-        Orange = 0,
-        Purple = 1,
-        Green = 3,
-    }
+    //private enum floeColor
+    //{
+    //    Orange = 0,
+    //    Purple = 1,
+    //    Green = 3,
+    //}
 
-    private bool userEntered = false;
+    private AudioSource audioSource;
+
+    playStepParticle particle;
+
+    public bool userEntered = false;
     public bool isVisible = true;
 
     private MeshRenderer mesh;
+    private PlayerManager manager;
 
     private void OnTriggerEnter(Collider other)
     {
+        particle.PlayParticle();
+        audioSource.Play();
         userEntered = true;
-        TriggerIceFloe();
+        manager.SendMessage("FloeEnter", number, SendMessageOptions.RequireReceiver);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        userEntered = false;
+        manager.SendMessage("FloeExit", number);
     }
 
     void Start () {
 
         mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
+        manager = GameObject.Find("Manager").GetComponent<PlayerManager>();
+
+        audioSource = GetComponent<AudioSource>();
+
+        particle = GetComponent<playStepParticle>();
     }
 	
 
@@ -44,16 +62,21 @@ public class IceFloe : MonoBehaviour {
         }
     }
 
-    void TriggerIceFloe()
-    {
-        // TODO: ice floe reacts to trigger (animation)
-    }
 
     public void SetVisible(bool visible)
     {
         isVisible = visible;
     }
 
+    private void ActivateParticles()
+    {
+        particle.PlayParticle();
+    }
+
+    private void PlayAudio()
+    {
+        audioSource.Play();
+    }
     public int GetID()
     {
         return number;
