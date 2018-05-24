@@ -377,7 +377,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 624b5f5adef59cb43b5bb90138ddf81b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.433
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iceFloe: {fileID: 1284519847487900, guid: 68cd039ac80f05d4b997f008a654a8ee, type: 2}
   secondToWaitForSpawn: 10
-  whileLimit: 1000
+  whileLimit: 500
 --- !u!4 &2143221622
 Transform:
   m_ObjectHideFlags: 0

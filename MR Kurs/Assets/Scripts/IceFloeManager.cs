@@ -6,8 +6,6 @@ using UnityEngine.AI;
 
 public class IceFloeManager : MonoBehaviour
 {
-
-
     private Vector3 sourcePosition;
     private Vector3 playerPosition;
     private static float yPositionFloor = -0.67f;
@@ -19,17 +17,14 @@ public class IceFloeManager : MonoBehaviour
     private float spawnDistance = 0.6f;
     private float DistanceBetweenFloes = 0.6f;
 
-    private Vector3 newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
-
     public float secondToWaitForSpawn = 5f;
+
+    private Vector3 newPosVec;
 
     public int whileLimit = 2000;
 
-
-
     void Start()
     {
-
         floeList = new List<IceFloe>();
         newPosList = new List<Vector3>();
         playerPosition = Camera.main.transform.position;
@@ -47,15 +42,13 @@ public class IceFloeManager : MonoBehaviour
     private IEnumerator WaitAndCreateFloes()
     {
         yield return new WaitForSecondsRealtime(secondToWaitForSpawn);
-        CreateFloes();
         yPositionFloor = GameObject.Find("SpatialProcessing").GetComponent<SurfaceMeshesToPlanes>().FloorYPosition;
-        print("floor pos:" + yPositionFloor);
+        newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
+        CreateFloes();
     }
 
     private void CreateFloes()
     {
-        //int switcher = 1; // switches from 1 to -1 to alternate x-positioning of the floes.
-
         IceFloe floe = new IceFloe();
         int whileInt = 0;
         int lastId = 0;
