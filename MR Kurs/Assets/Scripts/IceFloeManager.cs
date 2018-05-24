@@ -23,6 +23,8 @@ public class IceFloeManager : MonoBehaviour
 
     public float secondToWaitForSpawn = 5f;
 
+    public int whileLimit = 2000;
+
 
 
     void Start()
@@ -59,7 +61,7 @@ public class IceFloeManager : MonoBehaviour
         int lastId = 0;
         int listPos = 0;
 
-        while (whileInt < 100)
+        while (whileInt < whileLimit)
         {
 
         newPosList.Add(new Vector3(sourcePosition.x + spawnDistance, yPositionFloor, sourcePosition.z));
