@@ -4,35 +4,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class IceFloeManager : MonoBehaviour {
+public class IceFloeManager : MonoBehaviour
+{
 
 
     private Vector3 sourcePosition;
     private Vector3 playerPosition;
-    private float yPositionFloor = -0.67f;
-
-    public float spawnMaxDistance = 2.0f;
-    public float minDistanceBetweenFloes = 0.7f;
-    public float maxDistanceBetweenFloes = 1.3f;
+    private static float yPositionFloor = -0.67f;
 
     public GameObject iceFloe;
-    List <IceFloe> floeList;
+    List<IceFloe> floeList;
+    List<Vector3> newPosList;
 
-    public int floatsToSpawn = 20;
+    private float spawnDistance = 0.6f;
+    private float DistanceBetweenFloes = 0.6f;
+
+    private Vector3 newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
+
     public float secondToWaitForSpawn = 5f;
 
 
-    void Start () {
+
+    void Start()
+    {
 
         floeList = new List<IceFloe>();
+        newPosList = new List<Vector3>();
         playerPosition = Camera.main.transform.position;
+        sourcePosition = playerPosition;
         //playerPosition = new Vector3(0f,-0.67f,0f);
         StartCoroutine(WaitAndCreateFloes());
     }
-	
-	void Update () {
 
-	}
+    void Update()
+    {
+
+    }
 
 
     private IEnumerator WaitAndCreateFloes()
@@ -46,62 +53,56 @@ public class IceFloeManager : MonoBehaviour {
     private void CreateFloes()
     {
         //int switcher = 1; // switches from 1 to -1 to alternate x-positioning of the floes.
-        sourcePosition = playerPosition;
-        Vector3 newPosition = new Vector3();
 
         IceFloe floe = new IceFloe();
+        int whileInt = 0;
+        int lastId = 0;
+        int listPos = 0;
 
-        if(SetNewPosition(sourcePosition, out newPosition))
+        while (whileInt < 100)
         {
-            floe = Instantiate(iceFloe, newPosition, Quaternion.identity).GetComponent<IceFloe>();
-            floe.SetID(0);
-            floe.SetPosition(newPosition);
-            floeList.Add((IceFloe)floe);
-            //print(newPosition + " " + floe.GetID());
-        }
 
-        for (int i = 1; i <= floatsToSpawn; i++)
-        {
-            float x = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
-            float z = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
-            sourcePosition = new Vector3(floe.GetPosition().x + x, yPositionFloor, floe.GetPosition().z + z);
-            //print(i+" sourcePos" + sourcePosition);
+        newPosList.Add(new Vector3(sourcePosition.x + spawnDistance, yPositionFloor, sourcePosition.z));
+        newPosList.Add(new Vector3(sourcePosition.x + newPosVec.x, yPositionFloor, sourcePosition.z + newPosVec.z));
+        newPosList.Add(new Vector3(sourcePosition.x - newPosVec.x, yPositionFloor, sourcePosition.z + newPosVec.z));
+        newPosList.Add(new Vector3(sourcePosition.x - spawnDistance, yPositionFloor, sourcePosition.z));
+        newPosList.Add(new Vector3(sourcePosition.x - newPosVec.x, yPositionFloor, sourcePosition.z - newPosVec.z));
+        newPosList.Add(new Vector3(sourcePosition.x + newPosVec.x, yPositionFloor, sourcePosition.z - newPosVec.z));
 
-            // if we could not find a new position, or if the distance between the old and new position is too small, pick new values and try again
-                while (Vector3.Distance(sourcePosition, newPosition) < minDistanceBetweenFloes || !CompareToFloes(sourcePosition) || !SetNewPosition(sourcePosition, out newPosition))
-                {
-                        x = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
-                        z = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
-                        sourcePosition = new Vector3(floe.GetPosition().x + x, yPositionFloor, floe.GetPosition().z + z);
-                        //print(i + " distance: " + Vector3.Distance(sourcePosition, newPosition));
-
-                }
-            
-
-            floe = Instantiate(iceFloe, newPosition, Quaternion.identity).GetComponent<IceFloe>();
-            floe.SetID(i);
-            floe.SetPosition(newPosition);
-            print(newPosition + " " + floe.GetID());
-            floeList.Add((IceFloe)floe);
-            for (int iFl = 0; iFl < floeList.Count; iFl++)
+            for (int i = 0; i < newPosList.Count; i++)
             {
-                Debug.Log("Listenobjekt: " + floeList[iFl]);
+                if (CheckNewPosition(newPosList[i]) && CompareToFloes(newPosList[i]))
+                {
+                    floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity).GetComponent<IceFloe>();
+                    floe.SetID(lastId + 1);
+                    floe.SetPosition(newPosList[i]);
+                    print(newPosList[i] + " " + floe.GetID());
+                    floeList.Add((IceFloe)floe);
+                }
+                else
+                {
+                    whileInt++;
+                }
             }
+            newPosList.Clear();
+            sourcePosition = floeList[listPos].GetPosition();
+            listPos++;
+
 
         }
+        
     }
 
-    private bool SetNewPosition(Vector3 sourcePos, out Vector3 newPos)
+
+    private bool CheckNewPosition(Vector3 sourcePos)
     {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(sourcePos, out hit, spawnMaxDistance, 1))
+        if (NavMesh.SamplePosition(sourcePos, out hit, 0.05f, 1))
         {
-            newPos = hit.position;
             return true;
         }
         else
         {
-            newPos = sourcePos;
             return false;
         }
     }
@@ -110,7 +111,7 @@ public class IceFloeManager : MonoBehaviour {
     {
         for (int i = 0; i < floeList.Count; i++)
         {
-            if(Vector3.Distance(sourcePos, floeList[i].GetPosition()) < minDistanceBetweenFloes)
+            if (Vector3.Distance(sourcePos, floeList[i].GetPosition()) < DistanceBetweenFloes)
             {
                 return false;
             }
