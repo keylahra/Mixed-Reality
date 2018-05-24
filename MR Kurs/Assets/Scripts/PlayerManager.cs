@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour {
     private bool playerOnFloe = true;
     private string sceneName = "SpatialMapping2";
 
-    List<IceFloe> iceFloes;
+    int currentFloeID = -1;
 
     void Start () {
 		
@@ -25,28 +25,36 @@ public class PlayerManager : MonoBehaviour {
 
     void Update () {
 
-        CheckIfPlayerOnFloe();
 	}
 
     void FloeEnter(int id)
     {
         print("FloeEnter");
+        currentFloeID = id;
     }
 
     void FloeExit(int id)
     {
         print("FloeExit");
+        currentFloeID = -1;
+        StartCoroutine(WaitForDeath());
+    }
+
+    private IEnumerator WaitForDeath()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        if(currentFloeID < 0)
+            OnPlayerDeath();
     }
 
     private void CheckIfPlayerOnFloe()
     {
-        //iceFloes = GetComponent<IceFloeManager>().floeList;
-        //foreach()
+
     }
 
     private void PlayerDeathFeedback()
     {
-
+        print("you are dead.");
     }
 
     private void EndScene()

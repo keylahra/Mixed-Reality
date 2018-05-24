@@ -103,7 +103,6 @@ public class Placeable : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        Debug.Log("a");
         targetPosition = gameObject.transform.position;
 
         // Get the object's collider.
