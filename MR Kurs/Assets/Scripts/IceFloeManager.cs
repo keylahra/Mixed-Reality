@@ -11,17 +11,20 @@ public class IceFloeManager : MonoBehaviour {
     private Vector3 playerPosition;
     private float yPositionFloor = -0.67f;
 
+    public float spawnMaxDistance = 2.0f;
     public float minDistanceBetweenFloes = 0.7f;
     public float maxDistanceBetweenFloes = 1.3f;
 
     public GameObject iceFloe;
+    List <IceFloe> floeList;
 
-    public int floatsToSpawn = 10;
+    public int floatsToSpawn = 20;
     public float secondToWaitForSpawn = 5f;
 
 
     void Start () {
 
+        floeList = new List<IceFloe>();
         playerPosition = Camera.main.transform.position;
         //playerPosition = new Vector3(0f,-0.67f,0f);
         StartCoroutine(WaitAndCreateFloes());
@@ -53,7 +56,7 @@ public class IceFloeManager : MonoBehaviour {
             floe = Instantiate(iceFloe, newPosition, Quaternion.identity).GetComponent<IceFloe>();
             floe.SetID(0);
             floe.SetPosition(newPosition);
-
+            floeList.Add((IceFloe)floe);
             //print(newPosition + " " + floe.GetID());
         }
 
@@ -65,26 +68,33 @@ public class IceFloeManager : MonoBehaviour {
             //print(i+" sourcePos" + sourcePosition);
 
             // if we could not find a new position, or if the distance between the old and new position is too small, pick new values and try again
-            while (Vector3.Distance(sourcePosition, newPosition) < minDistanceBetweenFloes || !SetNewPosition(sourcePosition, out newPosition))
-            {
-                x = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
-                z = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
-                sourcePosition = new Vector3(floe.GetPosition().x + x, yPositionFloor, floe.GetPosition().z + z);
-                //print(i + " distance: " + Vector3.Distance(sourcePosition, newPosition));
-            }
+                while (Vector3.Distance(sourcePosition, newPosition) < minDistanceBetweenFloes || !CompareToFloes(sourcePosition) || !SetNewPosition(sourcePosition, out newPosition))
+                {
+                        x = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
+                        z = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
+                        sourcePosition = new Vector3(floe.GetPosition().x + x, yPositionFloor, floe.GetPosition().z + z);
+                        //print(i + " distance: " + Vector3.Distance(sourcePosition, newPosition));
+
+                }
+            
 
             floe = Instantiate(iceFloe, newPosition, Quaternion.identity).GetComponent<IceFloe>();
             floe.SetID(i);
             floe.SetPosition(newPosition);
-
             print(newPosition + " " + floe.GetID());
+            floeList.Add((IceFloe)floe);
+            for (int iFl = 0; iFl < floeList.Count; iFl++)
+            {
+                Debug.Log("Listenobjekt: " + floeList[iFl]);
+            }
+
         }
     }
 
     private bool SetNewPosition(Vector3 sourcePos, out Vector3 newPos)
     {
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(sourcePos, out hit, 1f, 1))
+        if (NavMesh.SamplePosition(sourcePos, out hit, spawnMaxDistance, 1))
         {
             newPos = hit.position;
             return true;
@@ -95,4 +105,20 @@ public class IceFloeManager : MonoBehaviour {
             return false;
         }
     }
+
+    private bool CompareToFloes(Vector3 sourcePos)
+    {
+        for (int i = 0; i < floeList.Count; i++)
+        {
+            if(Vector3.Distance(sourcePos, floeList[i].GetPosition()) < minDistanceBetweenFloes)
+            {
+                return false;
+            }
+            else
+            {
+            }
+        }
+        return true;
+    }
+
 }
