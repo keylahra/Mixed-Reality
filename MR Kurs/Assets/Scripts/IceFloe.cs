@@ -17,7 +17,12 @@ public class IceFloe : MonoBehaviour {
 
     private bool userEntered = false;
 
-	void Start () {
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    void Start () {
 		
 	}
 	

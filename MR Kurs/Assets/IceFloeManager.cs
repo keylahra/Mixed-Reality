@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HoloToolkit.Unity.SpatialMapping;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,9 +16,14 @@ public class IceFloeManager : MonoBehaviour {
 
     public GameObject iceFloe;
 
+    public int floatsToSpawn = 10;
+    public float secondToWaitForSpawn = 5f;
+
+
     void Start () {
 
-        playerPosition = new Vector3(0f,-0.67f,0f);
+        playerPosition = Camera.main.transform.position;
+        //playerPosition = new Vector3(0f,-0.67f,0f);
         StartCoroutine(WaitAndCreateFloes());
     }
 	
@@ -25,10 +31,13 @@ public class IceFloeManager : MonoBehaviour {
 
 	}
 
+
     private IEnumerator WaitAndCreateFloes()
     {
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(secondToWaitForSpawn);
         CreateFloes();
+        yPositionFloor = GameObject.Find("SpatialProcessing").GetComponent<SurfaceMeshesToPlanes>().FloorYPosition;
+        print("floor pos:" + yPositionFloor);
     }
 
     private void CreateFloes()
@@ -45,25 +54,23 @@ public class IceFloeManager : MonoBehaviour {
             floe.SetID(0);
             floe.SetPosition(newPosition);
 
-            print(newPosition + " " + floe.GetID());
+            //print(newPosition + " " + floe.GetID());
         }
 
-        for (int i = 1; i < 10; i++)
+        for (int i = 1; i <= floatsToSpawn; i++)
         {
             float x = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
             float z = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
             sourcePosition = new Vector3(floe.GetPosition().x + x, yPositionFloor, floe.GetPosition().z + z);
-            print(i+" sourcePos" + sourcePosition);
-            print(i + " distance: " + Vector3.Distance(sourcePosition, newPosition));
+            //print(i+" sourcePos" + sourcePosition);
 
             // if we could not find a new position, or if the distance between the old and new position is too small, pick new values and try again
             while (Vector3.Distance(sourcePosition, newPosition) < minDistanceBetweenFloes || !SetNewPosition(sourcePosition, out newPosition))
             {
-                print(i + " try again");
                 x = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
                 z = Random.Range(-maxDistanceBetweenFloes, maxDistanceBetweenFloes);
                 sourcePosition = new Vector3(floe.GetPosition().x + x, yPositionFloor, floe.GetPosition().z + z);
-                print(i + " distance: " + Vector3.Distance(sourcePosition, newPosition));
+                //print(i + " distance: " + Vector3.Distance(sourcePosition, newPosition));
             }
 
             floe = Instantiate(iceFloe, newPosition, Quaternion.identity).GetComponent<IceFloe>();
