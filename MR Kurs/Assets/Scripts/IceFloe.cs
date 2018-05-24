@@ -18,6 +18,8 @@ public class IceFloe : MonoBehaviour {
     private bool userEntered = false;
     public bool isVisible = true;
 
+    private MeshRenderer mesh;
+
     private void OnTriggerEnter(Collider other)
     {
         userEntered = true;
@@ -25,22 +27,22 @@ public class IceFloe : MonoBehaviour {
     }
 
     void Start () {
-		
-	}
+
+        mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
+    }
 	
 
 	void Update () {
 
         if (isVisible)
         {
-            //GetComponent<MeshRenderer>().enabled = true;
+            mesh.enabled = true;
         }
         else
         {
-            //GetComponent<MeshRenderer>().enabled = false;
+            mesh.enabled = false;
         }
-		
-	}
+    }
 
     void TriggerIceFloe()
     {

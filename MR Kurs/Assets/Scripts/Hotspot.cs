@@ -12,19 +12,30 @@ public class Hotspot : MonoBehaviour {
 
     private AudioSource audioSource;
 
+    playStepParticle particle;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        OnEntered += PlayAudio;
+        //OnEntered += PlayAudio;
+        //OnEntered += ActivateParticles;
+
+        particle = transform.parent.gameObject.GetComponent<playStepParticle>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Entered!");
-        if (OnEntered != null)
-        {
-            OnEntered();
-            }
+        particle.PlayParticle();
+        audioSource.Play();
+        //if (OnEntered != null)
+        //{
+        //    OnEntered();
+        //    }
+    }
+
+    private void ActivateParticles()
+    {
+        particle.PlayParticle();
     }
 
     private void PlayAudio()
@@ -34,7 +45,6 @@ public class Hotspot : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Exited!");
         if (OnExited != null)
         {
             OnExited();
