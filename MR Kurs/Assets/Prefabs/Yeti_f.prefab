@@ -36,6 +36,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4984414285891592}
+  - component: {fileID: 114378042129977244}
+  - component: {fileID: 65681955577840736}
   m_Layer: 0
   m_Name: Yeti_f
   m_TagString: Untagged
@@ -83,7 +85,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: efb1e762f3ee3f4478bb376ba9f3b96c, type: 2}
   m_StaticBatchInfo:
@@ -112,3 +113,35 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1327286869491452}
   m_Mesh: {fileID: 4300000, guid: 4a50dda82fd46e04eadb89e243aaf002, type: 3}
+--- !u!65 &65681955577840736
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1382591275149954}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114378042129977244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1382591275149954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aad8740fa353764494da163ba754018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkForUpwardCollision: 1
+  selectable: 0
+  PlaceableBoundsMaterial: {fileID: 0}
+  NotPlaceableBoundsMaterial: {fileID: 0}
+  PlaceableShadowMaterial: {fileID: 0}
+  NotPlaceableShadowMaterial: {fileID: 0}
+  PlacementSurface: 1
+  PlacementPlane: 2
+  ChildrenToHide: []

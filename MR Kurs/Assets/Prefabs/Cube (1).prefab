@@ -56,7 +56,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -108,11 +107,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aad8740fa353764494da163ba754018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: 0
+  checkForUpwardCollision: 1
+  selectable: 1
   PlaceableBoundsMaterial: {fileID: 0}
   NotPlaceableBoundsMaterial: {fileID: 0}
   PlaceableShadowMaterial: {fileID: 0}
   NotPlaceableShadowMaterial: {fileID: 0}
-  PlacementSurface: 1
+  PlacementSurface: 2
   PlacementPlane: 2
   ChildrenToHide: []

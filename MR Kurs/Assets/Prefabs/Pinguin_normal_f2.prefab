@@ -19,6 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4721135450238560}
+  - component: {fileID: 114304670541424362}
+  - component: {fileID: 65778874536092220}
   m_Layer: 0
   m_Name: Pinguin_normal_f2
   m_TagString: Untagged
@@ -176,7 +178,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ef1355cb7211b0f44ac5e41006fc13e1, type: 2}
   m_StaticBatchInfo:
@@ -211,7 +212,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ef1355cb7211b0f44ac5e41006fc13e1, type: 2}
   m_StaticBatchInfo:
@@ -246,7 +246,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ef1355cb7211b0f44ac5e41006fc13e1, type: 2}
   m_StaticBatchInfo:
@@ -281,7 +280,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: ef1355cb7211b0f44ac5e41006fc13e1, type: 2}
   m_StaticBatchInfo:
@@ -331,3 +329,35 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468779246793020}
   m_Mesh: {fileID: 4300002, guid: 8f5888e785f7dce438a1e53d5e131b72, type: 3}
+--- !u!65 &65778874536092220
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1435505051426406}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114304670541424362
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1435505051426406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aad8740fa353764494da163ba754018, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkForUpwardCollision: 1
+  selectable: 0
+  PlaceableBoundsMaterial: {fileID: 0}
+  NotPlaceableBoundsMaterial: {fileID: 0}
+  PlaceableShadowMaterial: {fileID: 0}
+  NotPlaceableShadowMaterial: {fileID: 0}
+  PlacementSurface: 1
+  PlacementPlane: 2
+  ChildrenToHide: []
