@@ -8,6 +8,8 @@ public class IceFloe : MonoBehaviour {
 
     private int number;
 
+    public bool isGoodFloe = true;
+
     //private enum floeColor
     //{
     //    Orange = 0,
@@ -19,29 +21,40 @@ public class IceFloe : MonoBehaviour {
 
     playStepParticle particle;
 
-    public bool userEntered = false;
-    public bool isVisible = true;
+    //public bool isVisible = true;
 
     private MeshRenderer mesh;
+    private Renderer rend;
     private PlayerManager manager;
 
     private void OnTriggerEnter(Collider other)
     {
         particle.PlayParticle();
         audioSource.Play();
-        userEntered = true;
-        manager.SendMessage("FloeEnter", number, SendMessageOptions.RequireReceiver);
+
+        if (isGoodFloe)
+        {
+            manager.SendMessage("FloeEnter", number, SendMessageOptions.RequireReceiver);
+        }
+        else
+        {
+            manager.SendMessage("FloeExit", number);
+            BadReaction();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        userEntered = false;
-        manager.SendMessage("FloeExit", number);
+        if (isGoodFloe)
+        {
+            manager.SendMessage("FloeExit", number);
+        }
     }
 
     void Start () {
 
-        mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
+        //mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
+        rend = this.transform.Find("Spindle001").gameObject.GetComponent<Renderer>();
         manager = GameObject.Find("Manager").GetComponent<PlayerManager>();
 
         audioSource = GetComponent<AudioSource>();
@@ -52,20 +65,28 @@ public class IceFloe : MonoBehaviour {
 
 	void Update () {
 
-        if (isVisible)
-        {
-            mesh.enabled = true;
-        }
-        else
-        {
-            mesh.enabled = false;
-        }
+        //if (isVisible)
+        //{
+        //    mesh.enabled = true;
+        //}
+        //else
+        //{
+        //    mesh.enabled = false;
+        //}
     }
 
 
-    public void SetVisible(bool visible)
+    //public void SetVisible(bool visible)
+    //{
+    //    isVisible = visible;
+    //}
+
+    private void BadReaction()
     {
-        isVisible = visible;
+        Material mat = rend.material;
+        mat.color = new Color(0.2311f, 0.4062f, 0.458f, 0.8117f);
+        //rend.material.shader = Shader.Find("_Color");
+        //rend.material.SetColor("_Color", new Color(59f,104f,117f,207f));
     }
 
     private void ActivateParticles()
@@ -95,5 +116,15 @@ public class IceFloe : MonoBehaviour {
     public void SetPosition(Vector3 pos)
     {
         position = pos;
+    }
+
+    public bool GetIsGoodFloe()
+    {
+        return isGoodFloe;
+    }
+
+    public void GetIsGoodFloe(bool isGood)
+    {
+        isGoodFloe = isGood;
     }
 }
