@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour {
 
     public GameObject myObject;
+    public GameObject loading;
 
     public delegate void PlayerDied();
     public static event PlayerDied OnPlayerDeath;
@@ -15,11 +16,22 @@ public class PlayerManager : MonoBehaviour {
 
     int currentFloeID = -1;
 
-    void Start () {
+    void Start()
+    {
 
-  
+        StartCoroutine(ActivationRoutine());
     }
 
+    private IEnumerator ActivationRoutine()
+    {
+
+        yield return new WaitForSeconds(7);
+
+        loading.gameObject.SetActive(false);
+
+    }
+
+    
     private void OnEnable()
     {
         //OnPlayerDeath += EndScene;
@@ -28,7 +40,8 @@ public class PlayerManager : MonoBehaviour {
 
     void Update () {
 
-	}
+
+    }
 
     void FloeEnter(int id)
     {
