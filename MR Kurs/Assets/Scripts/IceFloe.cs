@@ -123,7 +123,7 @@ public class IceFloe : MonoBehaviour {
         return isGoodFloe;
     }
 
-    public void GetIsGoodFloe(bool isGood)
+    public void SetIsGoodFloe(bool isGood)
     {
         isGoodFloe = isGood;
     }
