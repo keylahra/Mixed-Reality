@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour {
 
         yield return new WaitForSeconds(7);
 
-        //loading.gameObject.SetActive(false);
+        //loading.SetActive(false);
 
     }
 
@@ -89,10 +89,13 @@ public class PlayerManager : MonoBehaviour {
 
     private void PlayerDeathFeedback()
     {
-        print("you are dead.");
-       // myObject.gameObject.SetActive(true);
-       // button.gameObject.SetActive(true);
-       // gameOver.Play();
+        
+        if (!playerDead)
+        {   print("you are dead.");
+            //myObject.SetActive(true);
+            //button.SetActive(true);
+            //gameOver.Play();
+        }
 
 
     }
