@@ -64,7 +64,10 @@ public class IceFloe : MonoBehaviour {
 	
 
 	void Update () {
-
+        if (GetIsGoodFloe() == true)
+        {
+            PathColor();
+        }
         //if (isVisible)
         //{
         //    mesh.enabled = true;
@@ -87,6 +90,12 @@ public class IceFloe : MonoBehaviour {
         mat.color = new Color(0.2311f, 0.4062f, 0.458f, 0.8117f);
         //rend.material.shader = Shader.Find("_Color");
         //rend.material.SetColor("_Color", new Color(59f,104f,117f,207f));
+    }
+
+    public void PathColor()
+    {
+        Material mat2 = rend.material;
+        mat2.color = new Color(0.9529f, 0.4549f, 0.7433f, 0.8117f);
     }
 
     private void ActivateParticles()
@@ -126,5 +135,6 @@ public class IceFloe : MonoBehaviour {
     public void SetIsGoodFloe(bool isGood)
     {
         isGoodFloe = isGood;
+
     }
 }
