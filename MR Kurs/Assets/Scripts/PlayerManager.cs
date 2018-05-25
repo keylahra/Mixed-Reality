@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour {
 
     public GameObject myObject;
     public GameObject loading;
+    public AudioSource gameOver;
 
     public delegate void PlayerDied();
     public static event PlayerDied OnPlayerDeath;
@@ -72,6 +73,9 @@ public class PlayerManager : MonoBehaviour {
     {
         print("you are dead.");
         myObject.gameObject.SetActive(true);
+        gameOver.Play();
+        Debug.Log("a");
+
 
     }
 
