@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HoloToolkit.Unity.SpatialMapping;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour {
 
     public GameObject myObject;
+    public GameObject button;
     public GameObject loading;
     public AudioSource gameOver;
 
@@ -14,6 +16,9 @@ public class PlayerManager : MonoBehaviour {
 
     private bool playerOnFloe = true;
     private string sceneName = "SpatialMapping2";
+    public float timeUntilPlayerDies = 2f;
+
+    private bool playerDead = false;
 
     int currentFloeID = -1;
 
@@ -28,7 +33,7 @@ public class PlayerManager : MonoBehaviour {
 
         yield return new WaitForSeconds(7);
 
-        loading.gameObject.SetActive(false);
+        //loading.gameObject.SetActive(false);
 
     }
 
@@ -41,27 +46,40 @@ public class PlayerManager : MonoBehaviour {
 
     void Update () {
 
-
+        //if(SpatialMappingManager.Instance.IsObserverRunning())
+        //        {
+        //    print ("observerrunning");
+        //    // If running, Stop the observer by calling
+        //    // StopObserver() on the SpatialMappingManager.Instance.
+        //    //SpatialMappingManager.Instance.StopObserver();
+        //}
+        //else
+        //{
+        //    print("observer stopped");
+        //}
     }
 
     void FloeEnter(int id)
     {
-        print("FloeEnter");
         currentFloeID = id;
     }
 
     void FloeExit(int id)
     {
-        print("FloeExit");
         currentFloeID = -1;
-        StartCoroutine(WaitForDeath());
+        if(!playerDead)
+            StartCoroutine(WaitForDeath());
     }
 
     private IEnumerator WaitForDeath()
     {
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(timeUntilPlayerDies);
         if(currentFloeID < 0)
+        {
             OnPlayerDeath();
+            playerDead = true;
+        }
+
     }
 
     private void CheckIfPlayerOnFloe()
@@ -72,9 +90,9 @@ public class PlayerManager : MonoBehaviour {
     private void PlayerDeathFeedback()
     {
         print("you are dead.");
-        myObject.gameObject.SetActive(true);
-        gameOver.Play();
-        Debug.Log("a");
+       // myObject.gameObject.SetActive(true);
+       // button.gameObject.SetActive(true);
+       // gameOver.Play();
 
 
     }
@@ -96,5 +114,10 @@ public class PlayerManager : MonoBehaviour {
     public void FirePlayerDeath()
     {
         OnPlayerDeath();
+    }
+
+    public void SetPlayerDead(bool dead)
+    {
+        playerDead = dead;
     }
 }

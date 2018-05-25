@@ -5,18 +5,29 @@ using UnityEngine;
 public class playStepParticle : MonoBehaviour {
 
 	public GameObject particlesObject;
-	public int destroyDelay = 4;
+    public GameObject badParticlesObject;
+    public int destroyDelay = 4;
 	private ParticleSystem particles;
 	
 	void Start () {
 
 	}
 
-    public void PlayParticle()
+    public void PlayParticle(bool isBad)
     {
-        particles = particlesObject.GetComponentInChildren<ParticleSystem>();
-        GameObject particlesObjectClone = Instantiate(particlesObject, transform.position, transform.rotation);
-        particles.Play();
-        Destroy(particlesObjectClone, destroyDelay);
-    }
+        if (!isBad)
+        {
+            particles = particlesObject.GetComponentInChildren<ParticleSystem>();
+            GameObject particlesObjectClone = Instantiate(particlesObject, transform.position, transform.rotation);
+            particles.Play();
+            Destroy(particlesObjectClone, destroyDelay);
+        }
+        else
+        {
+            particles = badParticlesObject.GetComponentInChildren<ParticleSystem>();
+            GameObject particlesObjectClone = Instantiate(badParticlesObject, transform.position, transform.rotation);
+            particles.Play();
+            Destroy(particlesObjectClone, destroyDelay);
+        }
+    }    
 }

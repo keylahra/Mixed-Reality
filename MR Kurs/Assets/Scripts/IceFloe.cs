@@ -8,7 +8,7 @@ public class IceFloe : MonoBehaviour {
 
     private int number;
 
-    public bool isGoodFloe = true;
+    public bool isGoodFloe = false;
 
     //private enum floeColor
     //{
@@ -26,19 +26,21 @@ public class IceFloe : MonoBehaviour {
     private MeshRenderer mesh;
     private Renderer rend;
     private PlayerManager manager;
+    private Color normalColor;
 
     private void OnTriggerEnter(Collider other)
     {
-        particle.PlayParticle();
         audioSource.Play();
 
         if (isGoodFloe)
         {
             manager.SendMessage("FloeEnter", number, SendMessageOptions.RequireReceiver);
+            particle.PlayParticle(true);
         }
         else
         {
             manager.SendMessage("FloeExit", number);
+            particle.PlayParticle(false);
             BadReaction();
         }
     }
@@ -55,6 +57,9 @@ public class IceFloe : MonoBehaviour {
 
         //mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
         rend = this.transform.Find("Spindle001").gameObject.GetComponent<Renderer>();
+        normalColor = rend.material.color;
+
+
         manager = GameObject.Find("Manager").GetComponent<PlayerManager>();
 
         audioSource = GetComponent<AudioSource>();
@@ -84,6 +89,14 @@ public class IceFloe : MonoBehaviour {
     //    isVisible = visible;
     //}
 
+    public void Reset()
+    {
+        Destroy(this.gameObject);
+        //Material mat = rend.material;
+        //mat.color = normalColor;
+        //isGoodFloe = false;
+    }
+
     private void BadReaction()
     {
         Material mat = rend.material;
@@ -96,11 +109,6 @@ public class IceFloe : MonoBehaviour {
     {
         Material mat2 = rend.material;
         mat2.color = new Color(0.9529f, 0.4549f, 0.7433f, 0.8117f);
-    }
-
-    private void ActivateParticles()
-    {
-        particle.PlayParticle();
     }
 
     private void PlayAudio()
