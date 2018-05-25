@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour {
 
+    public GameObject myObject;
+
     public delegate void PlayerDied();
     public static event PlayerDied OnPlayerDeath;
 
@@ -14,8 +16,9 @@ public class PlayerManager : MonoBehaviour {
     int currentFloeID = -1;
 
     void Start () {
-		
-	}
+
+  
+    }
 
     private void OnEnable()
     {
@@ -55,6 +58,8 @@ public class PlayerManager : MonoBehaviour {
     private void PlayerDeathFeedback()
     {
         print("you are dead.");
+        myObject.gameObject.SetActive(true);
+
     }
 
     private void EndScene()
