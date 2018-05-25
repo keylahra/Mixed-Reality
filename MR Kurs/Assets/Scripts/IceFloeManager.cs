@@ -78,7 +78,7 @@ public class IceFloeManager : MonoBehaviour
                     floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity).GetComponent<IceFloe>();
                     floe.SetID(lastId + 1);
                     floe.SetPosition(newPosList[i]);
-                    print(newPosList[i] + " " + floe.GetID());
+                    //print(newPosList[i] + " " + floe.GetID());
                     floeList.Add((IceFloe)floe);
                 }
                 else
