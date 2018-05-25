@@ -17,6 +17,7 @@ public class IceFloeManager : MonoBehaviour
     List<IceFloe> floeList;
     List<Vector3> newPosList;
     List<IceFloe> pathList;
+    List<int> usedFieldsList;
 
     private float spawnDistance = 0.6f;
     private float DistanceBetweenFloes = 0.6f;
@@ -32,6 +33,7 @@ public class IceFloeManager : MonoBehaviour
         floeList = new List<IceFloe>();
         newPosList = new List<Vector3>();
         pathList = new List<IceFloe>();
+        usedFieldsList = new List<int>();
         playerPosition = Camera.main.transform.position;
         sourcePosition = playerPosition;
         startPosition = playerPosition;
@@ -138,19 +140,34 @@ public class IceFloeManager : MonoBehaviour
         //if(startposition == playerPosition){
         startPosition = floeList[0].GetPosition();
         lastPosition = floeList[0].GetPosition();
-        for (int j = 0; j < floeList.Count -1; j++)
-        {  
-            if (Vector3.Distance(lastPosition, floeList[j].GetPosition()) <= 2f)
+        for (int x = 0; x <= 2000; x++)
+        {
+            for (int j = 0; j < floeList.Count-1; j++)
             {
-                pathList.Add(floeList[j]);
-                nextPath = Random.Range(0, pathList.Count-1);
-                pathList[nextPath].SetIsGoodFloe(true);
-                lastPosition = pathList[nextPath].GetPosition();
-                pathList.Clear();
+                if (startPosition == floeList[0].GetPosition())
+                {
+                    if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                    {
+                        pathList.Add(floeList[j]);
+                        usedFieldsList.Add(j);
+
+                    }
+                }
+                else if(!usedFieldsList.Contains(j)){
+                    if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                    {
+                        pathList.Add(floeList[j]);
+                        usedFieldsList.Add(j);
+
+                    }
+                }
+
             }
-            else
-            {
-            }
+            nextPath = Random.Range(0, pathList.Count - 1);
+            pathList[nextPath].SetIsGoodFloe(true);
+            lastPosition = startPosition;
+            startPosition = pathList[nextPath].GetPosition();
+            pathList.Clear();
         }
         //}else{}
     }
