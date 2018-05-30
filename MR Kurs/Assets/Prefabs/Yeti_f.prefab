@@ -85,6 +85,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: efb1e762f3ee3f4478bb376ba9f3b96c, type: 2}
   m_StaticBatchInfo:
@@ -142,6 +143,6 @@ MonoBehaviour:
   NotPlaceableBoundsMaterial: {fileID: 0}
   PlaceableShadowMaterial: {fileID: 0}
   NotPlaceableShadowMaterial: {fileID: 0}
-  PlacementSurface: 1
+  PlacementSurface: 2
   PlacementPlane: 2
   ChildrenToHide: []

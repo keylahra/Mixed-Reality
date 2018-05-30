@@ -19,7 +19,7 @@ public class IceFloeManager : MonoBehaviour
     List<IceFloe> pathList;
     List<int> usedFieldsList;
 
-    private float spawnDistance = 0.6f;
+    private float spawnDistance = 0.8f;
     private float DistanceBetweenFloes = 0.6f;
 
     public float secondToWaitForSpawn = 5f;
@@ -64,7 +64,7 @@ public class IceFloeManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(secondToWaitForSpawn);
         yPositionFloor = GameObject.Find("SpatialProcessing").GetComponent<SurfaceMeshesToPlanes>().FloorYPosition;
-        newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
+        newPosVec = new Vector3(0.4f, yPositionFloor, 0.69f);
         CreateFloes();
     }
 
@@ -176,9 +176,12 @@ public class IceFloeManager : MonoBehaviour
 
             }
             nextPath = Random.Range(0, pathList.Count - 1);
-            pathList[nextPath].SetIsGoodFloe(true);
-            lastPosition = startPosition;
-            startPosition = pathList[nextPath].GetPosition();
+            if (nextPath < pathList.Count)
+            {
+                pathList[nextPath].SetIsGoodFloe(true);
+                lastPosition = startPosition;
+                startPosition = pathList[nextPath].GetPosition();
+            }
             pathList.Clear();
         }
         //}else{}

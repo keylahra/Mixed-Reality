@@ -9,7 +9,8 @@ public class PlayerManager : MonoBehaviour {
     public GameObject myObject;
     public GameObject button;
     public GameObject loading;
-    public AudioSource gameOver;
+    public AudioSource gameOverAudio;
+    public AudioClip gameOver;
 
     public delegate void PlayerDied();
     public static event PlayerDied OnPlayerDeath;
@@ -24,17 +25,18 @@ public class PlayerManager : MonoBehaviour {
 
     void Start()
     {
+        gameOverAudio = GetComponent<AudioSource>();
+        gameOverAudio.clip = gameOver;
 
+        loading = GameObject.Find("InputManager").transform.Find("SpatialUILoading").gameObject;
+        button = GameObject.Find("InputManager").transform.Find("SpatialUI").gameObject;
         StartCoroutine(ActivationRoutine());
     }
 
     private IEnumerator ActivationRoutine()
     {
-
         yield return new WaitForSeconds(7);
-
-        //loading.SetActive(false);
-
+        loading.SetActive(false);
     }
 
     
@@ -79,12 +81,10 @@ public class PlayerManager : MonoBehaviour {
             OnPlayerDeath();
             playerDead = true;
         }
-
     }
 
     private void CheckIfPlayerOnFloe()
     {
-
     }
 
     private void PlayerDeathFeedback()
@@ -93,8 +93,8 @@ public class PlayerManager : MonoBehaviour {
         if (!playerDead)
         {   print("you are dead.");
             //myObject.SetActive(true);
-            //button.SetActive(true);
-            //gameOver.Play();
+            button.SetActive(true);
+            gameOverAudio.Play();
         }
 
 
