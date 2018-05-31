@@ -54,7 +54,6 @@ public class IceFloeManager : MonoBehaviour
             floe.Reset();
         }
         floeList.Clear();
-        GameObject.Find("Manager").GetComponent<PlayerManager>().SetPlayerDead(false);
         newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
         CreateFloes();
     }

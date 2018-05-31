@@ -6,11 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour {
 
-    public GameObject myObject;
-    public GameObject button;
-    public GameObject loading;
-    public AudioSource gameOverAudio;
-    public AudioClip gameOver;
+    private GameObject button;
+    private GameObject loading;
+    private AudioSource gameOverAudio;
+    public AudioClip gameOverClip;
 
     public delegate void PlayerDied();
     public static event PlayerDied OnPlayerDeath;
@@ -20,13 +19,16 @@ public class PlayerManager : MonoBehaviour {
     public float timeUntilPlayerDies = 2f;
 
     private bool playerDead = false;
+    private IceFloeManager iceFloeManager;
 
     int currentFloeID = -1;
 
     void Start()
     {
+        iceFloeManager = GetComponent<IceFloeManager>();
+
         gameOverAudio = GetComponent<AudioSource>();
-        gameOverAudio.clip = gameOver;
+        gameOverAudio.clip = gameOverClip;
 
         loading = GameObject.Find("InputManager").transform.Find("SpatialUILoading").gameObject;
         button = GameObject.Find("InputManager").transform.Find("SpatialUI").gameObject;
@@ -87,17 +89,28 @@ public class PlayerManager : MonoBehaviour {
     {
     }
 
-    private void PlayerDeathFeedback()
+    public void Reset()
     {
-        
+        iceFloeManager.Reset();
+        playerDead = false;
+        ResetUI();
+    }
+
+    private void ResetUI()
+    {
+        button.SetActive(false);
+        loading.SetActive(false);
+    }
+
+    private void PlayerDeathFeedback()
+    {    
         if (!playerDead)
         {   print("you are dead.");
             //myObject.SetActive(true);
             button.SetActive(true);
-            gameOverAudio.Play();
+            if (gameOverAudio != null)
+                gameOverAudio.Play();
         }
-
-
     }
 
     private void EndScene()
@@ -117,10 +130,5 @@ public class PlayerManager : MonoBehaviour {
     public void FirePlayerDeath()
     {
         OnPlayerDeath();
-    }
-
-    public void SetPlayerDead(bool dead)
-    {
-        playerDead = dead;
     }
 }
