@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 114567422360818024}
   - component: {fileID: 82173023629475672}
   - component: {fileID: 136596494841626608}
-  - component: {fileID: 114283544530582130}
   m_Layer: 0
   m_Name: IceFloe
   m_TagString: Untagged
@@ -128,8 +127,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 243123475817120668, guid: 57a984a6bd4225149b54bea8cf1dc1f9,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 30509069286ba1a4d9d826a10b371065, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.049
+  m_PlayOnAwake: 0
+  m_Volume: 0.113
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -213,22 +212,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114283544530582130
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1284519847487900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c347585c81bf2a4b86892ace454a5bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myObject: {fileID: 0}
-  button: {fileID: 0}
-  loading: {fileID: 0}
-  gameOver: {fileID: 0}
-  timeUntilPlayerDies: 2
 --- !u!114 &114567422360818024
 MonoBehaviour:
   m_ObjectHideFlags: 1

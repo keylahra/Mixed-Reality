@@ -6,19 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour {
 
-    private GameObject button;
+    private GameObject buttonParent;
     private GameObject loading;
-    private AudioSource gameOverAudio;
-    public AudioClip gameOverClip;
+    public AudioSource gameOverAudio;
+    public AudioSource spawnAudio;
 
-    public delegate void PlayerDied();
-    public static event PlayerDied OnPlayerDeath;
+    //public delegate void PlayerDied();
+    //public static event PlayerDied OnPlayerDeath;
 
     private bool playerOnFloe = true;
     private string sceneName = "SpatialMapping2";
     public float timeUntilPlayerDies = 2f;
 
     private bool playerDead = false;
+    private bool waitingForDeath = false;
+    private float counter = 0f;
+
     private IceFloeManager iceFloeManager;
 
     int currentFloeID = -1;
@@ -27,11 +30,8 @@ public class PlayerManager : MonoBehaviour {
     {
         iceFloeManager = GetComponent<IceFloeManager>();
 
-        gameOverAudio = GetComponent<AudioSource>();
-        gameOverAudio.clip = gameOverClip;
-
-        loading = GameObject.Find("InputManager").transform.Find("SpatialUILoading").gameObject;
-        button = GameObject.Find("InputManager").transform.Find("SpatialUI").gameObject;
+        loading = GameObject.Find("UI").transform.Find("SpatialUILoading").gameObject;
+        buttonParent = GameObject.Find("UI").transform.Find("SpatialUI").gameObject;
         StartCoroutine(ActivationRoutine());
     }
 
@@ -39,13 +39,13 @@ public class PlayerManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(7);
         loading.SetActive(false);
+        spawnAudio.Play();
     }
 
     
     private void OnEnable()
     {
-        //OnPlayerDeath += EndScene;
-        OnPlayerDeath += PlayerDeathFeedback;
+        //OnPlayerDeath += PlayerDeathFeedback;
     }
 
     void Update () {
@@ -61,33 +61,51 @@ public class PlayerManager : MonoBehaviour {
         //{
         //    print("observer stopped");
         //}
-    }
-
-    void FloeEnter(int id)
-    {
-        currentFloeID = id;
-    }
-
-    void FloeExit(int id)
-    {
-        currentFloeID = -1;
-        if(!playerDead)
-            StartCoroutine(WaitForDeath());
-    }
-
-    private IEnumerator WaitForDeath()
-    {
-        yield return new WaitForSecondsRealtime(timeUntilPlayerDies);
-        if(currentFloeID < 0)
+        if (!playerDead)
         {
-            OnPlayerDeath();
-            playerDead = true;
+            if (waitingForDeath)
+            {
+                counter += Time.deltaTime;
+                if (counter >= timeUntilPlayerDies)
+                {
+                    PlayerDeathFeedback();
+                }
+            }
+            else
+            {
+                counter = 0;
+            }
         }
     }
 
-    private void CheckIfPlayerOnFloe()
+    // Player enters a "good" floe
+    void FloeEnter(int id)
     {
+        currentFloeID = id;
+        waitingForDeath = false;
     }
+
+    // Player exits a "good" floe or enters a "bad" floe
+    void FloeExit(int id)
+    {
+        currentFloeID = -1;
+        if (!playerDead && !waitingForDeath)
+        {
+            //StartCoroutine(WaitForDeath());
+            waitingForDeath = true;
+        }
+
+    }
+
+    //private IEnumerator WaitForDeath()
+    //{
+    //    yield return new WaitForSecondsRealtime(timeUntilPlayerDies);
+    //    if(currentFloeID < 0)
+    //    {
+    //        OnPlayerDeath();
+    //        playerDead = true;
+    //    }
+    //}
 
     public void Reset()
     {
@@ -98,18 +116,19 @@ public class PlayerManager : MonoBehaviour {
 
     private void ResetUI()
     {
-        button.SetActive(false);
+        buttonParent.SetActive(false);
         loading.SetActive(false);
     }
 
     private void PlayerDeathFeedback()
     {    
         if (!playerDead)
-        {   print("you are dead.");
-            //myObject.SetActive(true);
-            button.SetActive(true);
-            if (gameOverAudio != null)
-                gameOverAudio.Play();
+        {
+            playerDead = true;
+            print("you are dead.");
+            buttonParent.SetActive(true);
+
+            gameOverAudio.Play();
         }
     }
 
@@ -125,10 +144,5 @@ public class PlayerManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(5);
         // reload scene
         SceneManager.LoadScene(sceneName);
-    }
-
-    public void FirePlayerDeath()
-    {
-        OnPlayerDeath();
     }
 }

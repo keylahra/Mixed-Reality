@@ -17,13 +17,19 @@ AudioMixerController:
   m_ExposedParameters: []
   m_AudioMixerGroupViews:
   - guids:
+    - 46dbe38dc6a75154b8b448738b9f267a
+    - dd275cfe523c36545b6424da911df7a3
+    - d1f493cb23a3de643af19d793d39991e
+    - 8536afab1bd869348bb312c49385e8fc
+    name: effects
+  - guids:
     - b5729dd0746f8c845b093ab510fd6e3a
     - 8536afab1bd869348bb312c49385e8fc
     - 0b4bbde3fdf274c4b8a395b09872564c
     - 46dbe38dc6a75154b8b448738b9f267a
     - dd275cfe523c36545b6424da911df7a3
     - d1f493cb23a3de643af19d793d39991e
-    name: View
+    name: all
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002
@@ -67,9 +73,11 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 613d76107d6da464db09eced3d5a746a
   m_FloatValues:
-    811224e12f21e924baabc8b5a2444e45: -10.345207
+    811224e12f21e924baabc8b5a2444e45: -1.761301
     0ae6c45371375ed4aab377b2bf84cd05: -0.08374829
-    2eee4c1586835ec48ad9486e655f8f04: -0.7045173
+    1420ffd3325d7cd48be215d4ed21a756: -2.5738313
+    2eee4c1586835ec48ad9486e655f8f04: -0.16685188
+    08e40a3ae38925441b2ba275f5baa6e8: 0.04171297
   m_TransitionOverrides: {}
 --- !u!243 &243004335501383190
 AudioMixerGroupController:

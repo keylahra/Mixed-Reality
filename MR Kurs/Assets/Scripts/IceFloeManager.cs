@@ -69,7 +69,7 @@ public class IceFloeManager : MonoBehaviour
 
     private void CreateFloes()
     {
-        IceFloe floe = new IceFloe();
+        IceFloe floe;
         int whileInt = 0;
         int lastId = 0;
         int listPos = 0;
