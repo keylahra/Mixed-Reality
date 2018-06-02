@@ -10,13 +10,6 @@ public class IceFloe : MonoBehaviour {
 
     public bool isGoodFloe = false;
 
-    //private enum floeColor
-    //{
-    //    Orange = 0,
-    //    Purple = 1,
-    //    Green = 3,
-    //}
-
     private AudioSource audioSource;
 
     playStepParticle particle;
@@ -26,7 +19,6 @@ public class IceFloe : MonoBehaviour {
     private MeshRenderer mesh;
     private Renderer rend;
     private PlayerManager manager;
-    private Color normalColor;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -57,13 +49,9 @@ public class IceFloe : MonoBehaviour {
 
         //mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
         rend = this.transform.Find("Spindle001").gameObject.GetComponent<Renderer>();
-        normalColor = rend.material.color;
-
 
         manager = GameObject.Find("Manager").GetComponent<PlayerManager>();
-
         audioSource = GetComponent<AudioSource>();
-
         particle = GetComponent<playStepParticle>();
     }
 	

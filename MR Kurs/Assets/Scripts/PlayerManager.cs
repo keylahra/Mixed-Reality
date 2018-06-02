@@ -14,7 +14,6 @@ public class PlayerManager : MonoBehaviour {
     //public delegate void PlayerDied();
     //public static event PlayerDied OnPlayerDeath;
 
-    private bool playerOnFloe = true;
     private string sceneName = "SpatialMapping2";
     public float timeUntilPlayerDies = 2f;
 
@@ -91,26 +90,16 @@ public class PlayerManager : MonoBehaviour {
         currentFloeID = -1;
         if (!playerDead && !waitingForDeath)
         {
-            //StartCoroutine(WaitForDeath());
             waitingForDeath = true;
         }
 
     }
 
-    //private IEnumerator WaitForDeath()
-    //{
-    //    yield return new WaitForSecondsRealtime(timeUntilPlayerDies);
-    //    if(currentFloeID < 0)
-    //    {
-    //        OnPlayerDeath();
-    //        playerDead = true;
-    //    }
-    //}
-
     public void Reset()
     {
         iceFloeManager.Reset();
         playerDead = false;
+        waitingForDeath = false;
         ResetUI();
     }
 
@@ -125,6 +114,7 @@ public class PlayerManager : MonoBehaviour {
         if (!playerDead)
         {
             playerDead = true;
+            waitingForDeath = false;
             print("you are dead.");
             buttonParent.SetActive(true);
 

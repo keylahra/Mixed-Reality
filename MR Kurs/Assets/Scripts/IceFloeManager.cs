@@ -11,7 +11,6 @@ public class IceFloeManager : MonoBehaviour
     private static float yPositionFloor = -0.67f;
 
     private Vector3 startPosition;
-    private Vector3 lastPosition;
 
     public GameObject iceFloe;
     List<IceFloe> floeList;
@@ -20,7 +19,7 @@ public class IceFloeManager : MonoBehaviour
     List<int> usedFieldsList;
 
     private float spawnDistance = 0.8f;
-    private float DistanceBetweenFloes = 0.6f;
+    private float distanceBetweenFloes = 0.6f;
 
     public float secondToWaitForSpawn = 5f;
 
@@ -34,11 +33,7 @@ public class IceFloeManager : MonoBehaviour
         newPosList = new List<Vector3>();
         pathList = new List<IceFloe>();
         usedFieldsList = new List<int>();
-        playerPosition = Camera.main.transform.position;
-        sourcePosition = playerPosition;
-        startPosition = playerPosition;
-        lastPosition = new Vector3(0,0,0);
-        //playerPosition = new Vector3(0f,-0.67f,0f);
+
         StartCoroutine(WaitAndCreateFloes());
     }
 
@@ -54,6 +49,9 @@ public class IceFloeManager : MonoBehaviour
             floe.Reset();
         }
         floeList.Clear();
+        newPosList.Clear();
+        pathList.Clear();
+        usedFieldsList.Clear();
         newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
         CreateFloes();
     }
@@ -74,6 +72,10 @@ public class IceFloeManager : MonoBehaviour
         int lastId = 0;
         int listPos = 0;
 
+        playerPosition = Camera.main.transform.position;
+        sourcePosition = playerPosition;
+        startPosition = playerPosition;
+
         while (whileInt < whileLimit)
         {
 
@@ -89,10 +91,11 @@ public class IceFloeManager : MonoBehaviour
                 if (CheckNewPosition(newPosList[i]) && CompareToFloes(newPosList[i]))
                 {
                     floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity).GetComponent<IceFloe>();
-                    floe.SetID(lastId + 1);
+                    floe.SetID(lastId);
                     floe.SetPosition(newPosList[i]);
                     //print(newPosList[i] + " " + floe.GetID());
                     floeList.Add((IceFloe)floe);
+                    lastId += 1;
                 }
                 else
                 {
@@ -106,13 +109,9 @@ public class IceFloeManager : MonoBehaviour
                 sourcePosition = floeList[listPos].GetPosition();
                 listPos++;
             }
-
-
         }
-
         CreatePath();
     }
-
 
     private bool CheckNewPosition(Vector3 sourcePos)
     {
@@ -131,7 +130,7 @@ public class IceFloeManager : MonoBehaviour
     {
         for (int i = 0; i < floeList.Count; i++)
         {
-            if (Vector3.Distance(sourcePos, floeList[i].GetPosition()) < DistanceBetweenFloes)
+            if (Vector3.Distance(sourcePos, floeList[i].GetPosition()) < distanceBetweenFloes)
             {
                 return false;
             }
@@ -144,46 +143,49 @@ public class IceFloeManager : MonoBehaviour
 
     private void CreatePath()
     {
-        List<IceFloe> nextPathFloe = new List<IceFloe>();
-
         int nextPath = 0;
 
-        //if(startposition == playerPosition){
-        startPosition = floeList[0].GetPosition();
-        lastPosition = floeList[0].GetPosition();
-        for (int x = 0; x <= 2000; x++)
+        // if floe list is not empty
+        if (floeList.Count != 0)
         {
-            for (int j = 0; j < floeList.Count-1; j++)
+            startPosition = floeList[0].GetPosition();
+
+            // first floe in path is the first floe that has been created (nearest to player)
+            pathList.Add(floeList[0]);
+
+            for (int x = 0; x <= 2000; x++)
             {
-                if (startPosition == floeList[0].GetPosition())
+                for (int j = 1; j < floeList.Count - 1; j++)
                 {
-                    if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                    if (startPosition == floeList[0].GetPosition())
                     {
-                        pathList.Add(floeList[j]);
-                        usedFieldsList.Add(j);
-
+                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                        {
+                            pathList.Add(floeList[j]);
+                            usedFieldsList.Add(j);
+                        }
+                    }
+                    else if (!usedFieldsList.Contains(j))
+                    {
+                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                        {
+                            pathList.Add(floeList[j]);
+                            usedFieldsList.Add(j);
+                        }
                     }
                 }
-                else if(!usedFieldsList.Contains(j)){
-                    if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
-                    {
-                        pathList.Add(floeList[j]);
-                        usedFieldsList.Add(j);
-
-                    }
+                nextPath = Random.Range(0, pathList.Count - 1);
+                if (nextPath < pathList.Count)
+                {
+                    pathList[nextPath].SetIsGoodFloe(true);
+                    startPosition = pathList[nextPath].GetPosition();
                 }
-
+                pathList.Clear();
             }
-            nextPath = Random.Range(0, pathList.Count - 1);
-            if (nextPath < pathList.Count)
-            {
-                pathList[nextPath].SetIsGoodFloe(true);
-                lastPosition = startPosition;
-                startPosition = pathList[nextPath].GetPosition();
-            }
-            pathList.Clear();
         }
-        //}else{}
+        else
+        {
+            print("CreatePath(): floe list is empty");
+        }
     }
-
 }
