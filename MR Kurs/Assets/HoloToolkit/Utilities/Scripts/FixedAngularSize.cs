@@ -100,7 +100,7 @@ namespace HoloToolkit.Unity
             // create an offset ratio based on the starting position. This value creates a new angle that pivots
             // on the starting position that is more or less drastic than the normal scale ratio.
             float curvedRatio = 1 - startingDistance * SizeRatio;
-            transform.localScale = startingScale * (distanceToHologram * SizeRatio + curvedRatio);
+            //transform.localScale = startingScale * (distanceToHologram * SizeRatio + curvedRatio);
         }
     }
 }
