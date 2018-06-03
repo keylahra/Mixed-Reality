@@ -76,6 +76,13 @@ public class IceFloeManager : MonoBehaviour
         sourcePosition = playerPosition;
         startPosition = playerPosition;
 
+        // create first floe exactly at player position (under his/her feet)
+        floe = Instantiate(iceFloe, new Vector3(playerPosition.x, yPositionFloor, playerPosition.z), Quaternion.identity).GetComponent<IceFloe>();
+        floe.SetID(lastId);
+        floe.SetPosition(new Vector3(playerPosition.x, yPositionFloor, playerPosition.z));
+        floeList.Add(floe);
+        lastId += 1;
+
         while (whileInt < whileLimit)
         {
 
@@ -94,7 +101,7 @@ public class IceFloeManager : MonoBehaviour
                     floe.SetID(lastId);
                     floe.SetPosition(newPosList[i]);
                     //print(newPosList[i] + " " + floe.GetID());
-                    floeList.Add((IceFloe)floe);
+                    floeList.Add(floe);
                     lastId += 1;
                 }
                 else
@@ -151,11 +158,13 @@ public class IceFloeManager : MonoBehaviour
             startPosition = floeList[0].GetPosition();
 
             // first floe in path is the first floe that has been created (nearest to player)
+            floeList[0].SetIsGoodFloe(true);
             pathList.Add(floeList[0]);
+            usedFieldsList.Add(0);
 
             for (int x = 0; x <= 2000; x++)
             {
-                for (int j = 1; j < floeList.Count - 1; j++)
+                for (int j = 0; j < floeList.Count; j++)
                 {
                     if (startPosition == floeList[0].GetPosition())
                     {
