@@ -1313,6 +1313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iceFloe: {fileID: 1284519847487900, guid: 68cd039ac80f05d4b997f008a654a8ee, type: 2}
+  spawnDistance: 1
   secondToWaitForSpawn: 10
   whileLimit: 500
 --- !u!4 &2143221622

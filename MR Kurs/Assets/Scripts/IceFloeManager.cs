@@ -19,12 +19,14 @@ public class IceFloeManager : MonoBehaviour
     private List<int> usedFieldsList;
     private GameObject iceFloeParent;
 
-    private float spawnDistance = 0.8f;
+    public float spawnDistance = 0.8f;
     private float distanceBetweenFloes = 0.6f;
 
     public float secondToWaitForSpawn = 5f;
 
     private Vector3 newPosVec;
+    private float a; // = 0.4f if spawnDistance = 0.8f
+    private float b; // = 0.69f if spawnDistance = 0.8f
 
     public int whileLimit = 2000;
 
@@ -36,6 +38,13 @@ public class IceFloeManager : MonoBehaviour
         usedFieldsList = new List<int>();
 
         iceFloeParent = GameObject.Find("Ice Floes");
+
+        // calculate values for newPosVec, based on the Sinus Rule 
+        float alpha = 0.5f;         // Mathf.Sin(30 * Mathf.PI / 180);  // alpha = 30°
+        float beta = 0.8660254f;    // Mathf.Sin(60 * Mathf.PI / 180);  // beta = 60°
+        float gamma = 1f;           // Mathf.Sin(90 * Mathf.PI / 180);  // gamma = 90°
+        a = (spawnDistance / gamma) * alpha;
+        b = (spawnDistance / gamma) * beta;
 
         StartCoroutine(WaitAndCreateFloes());
     }
@@ -55,7 +64,7 @@ public class IceFloeManager : MonoBehaviour
         newPosList.Clear();
         pathList.Clear();
         usedFieldsList.Clear();
-        newPosVec = new Vector3(0.3f, yPositionFloor, 0.52f);
+        newPosVec = new Vector3(a, yPositionFloor, b);
         CreateFloes();
     }
 
@@ -64,7 +73,7 @@ public class IceFloeManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(secondToWaitForSpawn);
         yPositionFloor = GameObject.Find("SpatialProcessing").GetComponent<SurfaceMeshesToPlanes>().FloorYPosition;
-        newPosVec = new Vector3(0.4f, yPositionFloor, 0.69f);
+        newPosVec = new Vector3(a, yPositionFloor, b);
         CreateFloes();
     }
 
@@ -173,7 +182,7 @@ public class IceFloeManager : MonoBehaviour
                 {
                     if (startPosition == floeList[0].GetPosition())
                     {
-                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance*1.25f))    // compare distance with a value that is relativ to the spawnDistance (sp.d.= 0.8 -> value = 1)
                         {
                             tempList.Add(floeList[j]);
                             usedFieldsList.Add(j);
@@ -181,7 +190,7 @@ public class IceFloeManager : MonoBehaviour
                     }
                     else if (!usedFieldsList.Contains(j))
                     {
-                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
+                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance*1.25f))
                         {
                             tempList.Add(floeList[j]);
                             usedFieldsList.Add(j);
