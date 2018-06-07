@@ -5,14 +5,11 @@ using UnityEngine;
 public class IceFloe : MonoBehaviour {
 
     private Vector3 position;
-
-    private int number;
-
-    public bool isGoodFloe = false;
+    private int floeID = -1;
+    private bool isGoodFloe = false;
 
     private AudioSource audioSource;
-
-    playStepParticle particle;
+    private playStepParticle particle;
 
     //public bool isVisible = true;
 
@@ -20,18 +17,19 @@ public class IceFloe : MonoBehaviour {
     private Renderer rend;
     private PlayerManager manager;
 
+
     private void OnTriggerEnter(Collider other)
     {
         audioSource.Play();
 
         if (isGoodFloe)
         {
-            manager.SendMessage("FloeEnter", number, SendMessageOptions.RequireReceiver);
+            manager.SendMessage("FloeEnter", floeID, SendMessageOptions.RequireReceiver);
             particle.PlayParticle(true);
         }
         else
         {
-            manager.SendMessage("FloeExit", number);
+            manager.SendMessage("FloeExit", floeID);
             particle.PlayParticle(false);
             BadReaction();
         }
@@ -41,7 +39,7 @@ public class IceFloe : MonoBehaviour {
     {
         if (isGoodFloe)
         {
-            manager.SendMessage("FloeExit", number);
+            manager.SendMessage("FloeExit", floeID);
         }
     }
 
@@ -105,12 +103,12 @@ public class IceFloe : MonoBehaviour {
     }
     public int GetID()
     {
-        return number;
+        return floeID;
     }
 
     public void SetID(int id)
     {
-        number = id;
+        floeID = id;
     }
 
     public Vector3 GetPosition()
@@ -131,6 +129,7 @@ public class IceFloe : MonoBehaviour {
     public void SetIsGoodFloe(bool isGood)
     {
         isGoodFloe = isGood;
-
+        if (!isGood)
+            floeID = -1;
     }
 }

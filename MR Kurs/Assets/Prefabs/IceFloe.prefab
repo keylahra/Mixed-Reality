@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4721686554944762}
   - component: {fileID: 33316288965761072}
   - component: {fileID: 23323533383987056}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Spindle001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114567422360818024}
   - component: {fileID: 82173023629475672}
   - component: {fileID: 136596494841626608}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: IceFloe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687239554a102b847876ef2d92ad162d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGoodFloe: 0
 --- !u!136 &136596494841626608
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -249,7 +248,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.34
+  m_Radius: 0.2
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0.64, z: -0.00000008940697}

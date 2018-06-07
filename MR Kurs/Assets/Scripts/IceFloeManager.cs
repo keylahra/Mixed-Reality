@@ -13,10 +13,11 @@ public class IceFloeManager : MonoBehaviour
     private Vector3 startPosition;
 
     public GameObject iceFloe;
-    List<IceFloe> floeList;
-    List<Vector3> newPosList;
-    List<IceFloe> pathList;
-    List<int> usedFieldsList;
+    private List<IceFloe> floeList;
+    private List<Vector3> newPosList;
+    private List<IceFloe> pathList;
+    private List<int> usedFieldsList;
+    private GameObject iceFloeParent;
 
     private float spawnDistance = 0.8f;
     private float distanceBetweenFloes = 0.6f;
@@ -33,6 +34,8 @@ public class IceFloeManager : MonoBehaviour
         newPosList = new List<Vector3>();
         pathList = new List<IceFloe>();
         usedFieldsList = new List<int>();
+
+        iceFloeParent = GameObject.Find("Ice Floes");
 
         StartCoroutine(WaitAndCreateFloes());
     }
@@ -74,12 +77,11 @@ public class IceFloeManager : MonoBehaviour
 
         playerPosition = Camera.main.transform.position;
         sourcePosition = playerPosition;
-        startPosition = playerPosition;
+        startPosition = new Vector3(playerPosition.x, yPositionFloor, playerPosition.z);
 
         // create first floe exactly at player position (under his/her feet)
-        floe = Instantiate(iceFloe, new Vector3(playerPosition.x, yPositionFloor, playerPosition.z), Quaternion.identity).GetComponent<IceFloe>();
-        floe.SetID(lastId);
-        floe.SetPosition(new Vector3(playerPosition.x, yPositionFloor, playerPosition.z));
+        floe = Instantiate(iceFloe, startPosition, Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
+        floe.SetPosition(startPosition);
         floeList.Add(floe);
         lastId += 1;
 
@@ -97,8 +99,9 @@ public class IceFloeManager : MonoBehaviour
             {
                 if (CheckNewPosition(newPosList[i]) && CompareToFloes(newPosList[i]))
                 {
-                    floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity).GetComponent<IceFloe>();
-                    floe.SetID(lastId);
+                    floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
+                    //floe = new IceFloe(newPosList[i], lastId, false);
+                    //floe.SetID(lastId);
                     floe.SetPosition(newPosList[i]);
                     //print(newPosList[i] + " " + floe.GetID());
                     floeList.Add(floe);
@@ -151,6 +154,8 @@ public class IceFloeManager : MonoBehaviour
     private void CreatePath()
     {
         int nextPath = 0;
+        int lastID = 0;
+        List<IceFloe> tempList = new List<IceFloe>();
 
         // if floe list is not empty
         if (floeList.Count != 0)
@@ -170,7 +175,7 @@ public class IceFloeManager : MonoBehaviour
                     {
                         if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
                         {
-                            pathList.Add(floeList[j]);
+                            tempList.Add(floeList[j]);
                             usedFieldsList.Add(j);
                         }
                     }
@@ -178,18 +183,29 @@ public class IceFloeManager : MonoBehaviour
                     {
                         if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= 1f)
                         {
-                            pathList.Add(floeList[j]);
+                            tempList.Add(floeList[j]);
                             usedFieldsList.Add(j);
                         }
                     }
                 }
-                nextPath = Random.Range(0, pathList.Count - 1);
-                if (nextPath < pathList.Count)
+
+                // randomly choose which floe to add to the path
+                nextPath = Random.Range(0, tempList.Count - 1);
+                if (nextPath < tempList.Count)
                 {
-                    pathList[nextPath].SetIsGoodFloe(true);
-                    startPosition = pathList[nextPath].GetPosition();
+                    pathList.Add(tempList[nextPath]);
+                    //pathList[nextPath].SetIsGoodFloe(true);
+                    startPosition = tempList[nextPath].GetPosition();
                 }
-                pathList.Clear();
+                tempList.Clear();
+            }
+
+            // set isGood tags and ID of all floes in pathList
+            foreach (IceFloe iceFloe in pathList)
+            {
+                iceFloe.SetIsGoodFloe(true);
+                iceFloe.SetID(lastID);
+                lastID++;
             }
         }
         else
