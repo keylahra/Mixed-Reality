@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour {
 
-    private GameObject buttonParent;
-    private GameObject loading;
+    private GameObject gameOverUI;
+    private GameObject loadingUI;
+    private GameObject finishUI;
     public AudioSource gameOverAudio;
     public AudioSource spawnAudio;
 
@@ -29,15 +30,16 @@ public class PlayerManager : MonoBehaviour {
     {
         iceFloeManager = GetComponent<IceFloeManager>();
 
-        loading = GameObject.Find("UI").transform.Find("SpatialUILoading").gameObject;
-        buttonParent = GameObject.Find("UI").transform.Find("SpatialUI").gameObject;
+        loadingUI = GameObject.Find("UI").transform.Find("Loading").gameObject;
+        gameOverUI = GameObject.Find("UI").transform.Find("Game Over").gameObject;
+        finishUI = GameObject.Find("UI").transform.Find("Finish").gameObject;
         StartCoroutine(ActivationRoutine());
     }
 
     private IEnumerator ActivationRoutine()
     {
         yield return new WaitForSeconds(7);
-        loading.SetActive(false);
+        loadingUI.SetActive(false);
         spawnAudio.Play();
     }
 
@@ -80,6 +82,10 @@ public class PlayerManager : MonoBehaviour {
     // Player enters a "good" floe
     void FloeEnter(int id)
     {
+        if(id == iceFloeManager.finalFloeID)
+        {
+            Finish();
+        }
         currentFloeID = id;
         waitingForDeath = false;
     }
@@ -105,8 +111,9 @@ public class PlayerManager : MonoBehaviour {
 
     private void ResetUI()
     {
-        buttonParent.SetActive(false);
-        loading.SetActive(false);
+        gameOverUI.SetActive(false);
+        loadingUI.SetActive(false);
+        finishUI.SetActive(false);
     }
 
     private void PlayerDeathFeedback()
@@ -116,7 +123,7 @@ public class PlayerManager : MonoBehaviour {
             playerDead = true;
             waitingForDeath = false;
             print("you are dead.");
-            buttonParent.SetActive(true);
+            gameOverUI.SetActive(true);
 
             gameOverAudio.Play();
         }
@@ -134,5 +141,11 @@ public class PlayerManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(5);
         // reload scene
         SceneManager.LoadScene(sceneName);
+    }
+
+    private void Finish()
+    {
+        print("finish!");
+        finishUI.SetActive(true);
     }
 }

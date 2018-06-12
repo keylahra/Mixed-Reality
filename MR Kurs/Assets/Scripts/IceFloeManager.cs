@@ -6,29 +6,46 @@ using UnityEngine.AI;
 
 public class IceFloeManager : MonoBehaviour
 {
+    //public variables
+
+    /// <summary>
+    /// iceFloe prefab
+    /// </summary>
+    public GameObject iceFloe;
+
+    /// <summary>
+    /// parent object for new ice floes
+    /// </summary>
+    private GameObject iceFloeParent;
+
+    // distances
+    public float spawnDistance = 0.8f;
+    public float secondToWaitForSpawn = 5f;
+
+    private float distanceBetweenFloes = 0.6f;
+    private float a; // = 0.4f if spawnDistance = 0.8f
+    private float b; // = 0.69f if spawnDistance = 0.8f
+
+    // positions
     private Vector3 sourcePosition;
     private Vector3 playerPosition;
+    private Vector3 startPosition;
+    private Vector3 newPosVec;
     private static float yPositionFloor = -0.67f;
 
-    private Vector3 startPosition;
-
-    public GameObject iceFloe;
+    // lists
     private List<IceFloe> floeList;
     private List<Vector3> newPosList;
     private List<IceFloe> pathList;
     private List<int> usedFieldsList;
-    private GameObject iceFloeParent;
-
-    public float spawnDistance = 0.8f;
-    private float distanceBetweenFloes = 0.6f;
-
-    public float secondToWaitForSpawn = 5f;
-
-    private Vector3 newPosVec;
-    private float a; // = 0.4f if spawnDistance = 0.8f
-    private float b; // = 0.69f if spawnDistance = 0.8f
 
     public int whileLimit = 2000;
+
+    [HideInInspector]
+    public int finalFloeID = 9999;
+
+    public bool paintPath;
+
 
     void Start()
     {
@@ -214,8 +231,12 @@ public class IceFloeManager : MonoBehaviour
             {
                 iceFloe.SetIsGoodFloe(true);
                 iceFloe.SetID(lastID);
+                if(paintPath)
+                    iceFloe.PathColor();
                 lastID++;
             }
+
+            finalFloeID = pathList.Count - 1;
         }
         else
         {

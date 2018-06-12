@@ -43,22 +43,22 @@ public class IceFloe : MonoBehaviour {
         }
     }
 
-    void Start () {
-
+    private void Awake()
+    {
         //mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
         rend = this.transform.Find("Spindle001").gameObject.GetComponent<Renderer>();
+    }
+
+    void Start () {
+
 
         manager = GameObject.Find("Manager").GetComponent<PlayerManager>();
         audioSource = GetComponent<AudioSource>();
         particle = GetComponent<playStepParticle>();
     }
-	
 
-	void Update () {
-        if (GetIsGoodFloe() == true)
-        {
-            PathColor();
-        }
+    void Update () {
+
         //if (isVisible)
         //{
         //    mesh.enabled = true;
