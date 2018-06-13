@@ -16,7 +16,9 @@ public class PlayerManager : MonoBehaviour {
     //public static event PlayerDied OnPlayerDeath;
 
     private string sceneName = "SpatialMapping2";
+
     public float timeUntilPlayerDies = 2f;
+    public bool onlyDieOnBadFloes;
 
     private bool playerDead = false;
     private bool waitingForDeath = false;
@@ -79,26 +81,32 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    // Player enters a "good" floe
+    // Player enters a floe
     void FloeEnter(int id)
     {
-        if(id == iceFloeManager.finalFloeID)
+        if(id >= 0)
         {
-            Finish();
+            if (id == iceFloeManager.finalFloeID)
+            {
+                Finish();
+            }
+            waitingForDeath = false;
         }
-        currentFloeID = id;
-        waitingForDeath = false;
-    }
-
-    // Player exits a "good" floe or enters a "bad" floe
-    void FloeExit(int id)
-    {
-        currentFloeID = -1;
-        if (!playerDead && !waitingForDeath)
+        else
         {
             waitingForDeath = true;
         }
+        currentFloeID = id;
+    }
 
+    // Player exits a floe 
+    void FloeExit(int id)
+    {
+        if (!onlyDieOnBadFloes && !playerDead && !waitingForDeath)
+        {
+            waitingForDeath = true;
+        }
+        currentFloeID = -2;
     }
 
     public void Reset()

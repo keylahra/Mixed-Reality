@@ -7,6 +7,7 @@ public class IceFloe : MonoBehaviour {
     private Vector3 position;
     private int floeID = -1;
     private bool isGoodFloe = false;
+    private bool playerOnFloe = false;
 
     private AudioSource audioSource;
     private playStepParticle particle;
@@ -21,15 +22,16 @@ public class IceFloe : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         audioSource.Play();
+        playerOnFloe = true;
+
+        manager.SendMessage("FloeEnter", floeID, SendMessageOptions.RequireReceiver);
 
         if (isGoodFloe)
         {
-            manager.SendMessage("FloeEnter", floeID, SendMessageOptions.RequireReceiver);
             particle.PlayParticle(true);
         }
         else
         {
-            manager.SendMessage("FloeExit", floeID);
             particle.PlayParticle(false);
             BadReaction();
         }
@@ -37,10 +39,9 @@ public class IceFloe : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        if (isGoodFloe)
-        {
-            manager.SendMessage("FloeExit", floeID);
-        }
+        playerOnFloe = false;
+        manager.SendMessage("FloeExit", floeID);
+
     }
 
     private void Awake()
@@ -50,7 +51,6 @@ public class IceFloe : MonoBehaviour {
     }
 
     void Start () {
-
 
         manager = GameObject.Find("Manager").GetComponent<PlayerManager>();
         audioSource = GetComponent<AudioSource>();

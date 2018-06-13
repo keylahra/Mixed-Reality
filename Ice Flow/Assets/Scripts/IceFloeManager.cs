@@ -6,8 +6,6 @@ using UnityEngine.AI;
 
 public class IceFloeManager : MonoBehaviour
 {
-    //public variables
-
     /// <summary>
     /// iceFloe prefab
     /// </summary>
