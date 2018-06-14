@@ -239,8 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687239554a102b847876ef2d92ad162d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathColor: {r: 1, g: 0.73399997, b: 0.9253334, a: 0.5019608}
-  badColor: {r: 0.2311, g: 0.4062, b: 0.458, a: 0.8117647}
+  pathColor: {r: 0.20784314, g: 0.46666667, b: 0.8196079, a: 1}
+  badColor: {r: 0.2738519, g: 0.31005758, b: 0.3207547, a: 1}
 --- !u!136 &136596494841626608
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -250,7 +250,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.23
+  m_Radius: 0.15
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0.64000005, z: -0.00000008940697}

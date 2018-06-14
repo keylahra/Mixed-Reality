@@ -11,7 +11,7 @@ public class IceFloe : MonoBehaviour {
     private Vector3 position;
     private int floeID = -1;
     private bool isGoodFloe = false;
-    private bool playerOnFloe = false;
+    private bool playerWasOnFloe = false;
 
     private AudioSource audioSource;
     private playStepParticle particle;
@@ -26,7 +26,7 @@ public class IceFloe : MonoBehaviour {
     private void OnTriggerEnter(Collider other)
     {
         audioSource.Play();
-        playerOnFloe = true;
+        playerWasOnFloe = true;
 
         manager.SendMessage("FloeEnter", floeID, SendMessageOptions.RequireReceiver);
 
@@ -43,9 +43,7 @@ public class IceFloe : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        playerOnFloe = false;
         manager.SendMessage("FloeExit", floeID);
-
     }
 
     private void Awake()
@@ -98,7 +96,7 @@ public class IceFloe : MonoBehaviour {
             Material mat2 = rend.material;
             mat2.color = pathColor;
         }
-        else
+        else if(!playerWasOnFloe)
         {
             Material mat2 = rend.material;
             mat2.color = originalColor;

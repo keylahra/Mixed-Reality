@@ -1893,9 +1893,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iceFloe: {fileID: 1284519847487900, guid: 68cd039ac80f05d4b997f008a654a8ee, type: 2}
-  spawnDistance: 0.7
+  spawnDistance: 0.8
   secondToWaitForSpawn: 10
-  whileLimit: 500
+  whileLimit: 200
   finalFloeID: 9999
   paintPath: 1
 --- !u!4 &2143221622
@@ -1925,7 +1925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverAudio: {fileID: 2143221626}
   spawnAudio: {fileID: 2143221625}
-  timeUntilPlayerDies: 0.5
+  timeUntilPlayerDies: 0.2
   onlyDieOnBadFloes: 1
 --- !u!82 &2143221624
 AudioSource:

@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour {
     private GameObject gameOverUI;
     private GameObject loadingUI;
     private GameObject finishUI;
+    //private GameObject errorUI;
     public AudioSource gameOverAudio;
     public AudioSource spawnAudio;
 
@@ -36,13 +37,14 @@ public class PlayerManager : MonoBehaviour {
         loadingUI = GameObject.Find("UI").transform.Find("Loading").gameObject;
         gameOverUI = GameObject.Find("UI").transform.Find("Game Over").gameObject;
         finishUI = GameObject.Find("UI").transform.Find("Finish").gameObject;
+        //errorUI = GameObject.Find("UI").transform.Find("Error").gameObject;
 
         StartCoroutine(ActivationRoutine());
     }
 
     private IEnumerator ActivationRoutine()
     {
-        yield return new WaitForSeconds(iceFloeManager.secondToWaitForSpawn+1f);
+        yield return new WaitForSeconds(iceFloeManager.secondToWaitForSpawn + 0.2f);
 
         iceFloePathList = iceFloeManager.GetPathList();
         loadingUI.SetActive(false);
@@ -105,14 +107,20 @@ public class PlayerManager : MonoBehaviour {
                         {
                             iceFloePathList[i].ChangeColor(false);      // hide the color of all other path floes (except of the first two)
                         }
+
                         iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
-                        iceFloePathList[id + 2].ChangeColor(true);      // show the color of the floe after the next
+                        if(id + 2 <  iceFloePathList.Count)
+                            iceFloePathList[id + 2].ChangeColor(true);  // show the color of the floe after the next
                     }
                     else
                     {
                         iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
-                        iceFloePathList[id + 1].ChangeColor(false);     // hide the color of the next floe
-                        iceFloePathList[id + 2].ChangeColor(true);      // show the color of the floe after the next
+                        if (id + 1 < iceFloePathList.Count)
+                        {
+                            iceFloePathList[id + 1].ChangeColor(false);     // hide the color of the next floe
+                            if (id + 2 < iceFloePathList.Count)
+                                iceFloePathList[id + 2].ChangeColor(true);      // show the color of the floe after the next
+                        }
                     }
                 }
                 waitingForDeath = false;
@@ -141,6 +149,7 @@ public class PlayerManager : MonoBehaviour {
         iceFloeManager.Reset();
         playerDead = false;
         waitingForDeath = false;
+        currentFloeID = 0;
         ResetUI();
     }
 
@@ -182,5 +191,8 @@ public class PlayerManager : MonoBehaviour {
     {
         print("finish!");
         finishUI.SetActive(true);
+        spawnAudio.Play();
+        playerDead = true;
+        waitingForDeath = false;
     }
 }
