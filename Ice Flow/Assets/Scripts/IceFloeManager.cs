@@ -124,10 +124,7 @@ public class IceFloeManager : MonoBehaviour
                 if (CheckNewPosition(newPosList[i]) && CompareToFloes(newPosList[i]))
                 {
                     floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
-                    //floe = new IceFloe(newPosList[i], lastId, false);
-                    //floe.SetID(lastId);
                     floe.SetPosition(newPosList[i]);
-                    //print(newPosList[i] + " " + floe.GetID());
                     floeList.Add(floe);
                     lastId += 1;
                 }
@@ -218,7 +215,6 @@ public class IceFloeManager : MonoBehaviour
                 if (nextPath < tempList.Count)
                 {
                     pathList.Add(tempList[nextPath]);
-                    //pathList[nextPath].SetIsGoodFloe(true);
                     startPosition = tempList[nextPath].GetPosition();
                 }
                 tempList.Clear();
@@ -230,7 +226,7 @@ public class IceFloeManager : MonoBehaviour
                 iceFloe.SetIsGoodFloe(true);
                 iceFloe.SetID(lastID);
                 if(paintPath)
-                    iceFloe.PathColor();
+                    iceFloe.ChangeColor(true);
                 lastID++;
             }
 
@@ -240,5 +236,11 @@ public class IceFloeManager : MonoBehaviour
         {
             print("CreatePath(): floe list is empty");
         }
+    }
+
+
+    public List<IceFloe> GetPathList()
+    {
+        return pathList;
     }
 }

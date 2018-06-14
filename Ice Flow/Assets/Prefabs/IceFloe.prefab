@@ -239,6 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687239554a102b847876ef2d92ad162d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathColor: {r: 1, g: 0.73399997, b: 0.9253334, a: 0.5019608}
+  badColor: {r: 0.2311, g: 0.4062, b: 0.458, a: 0.8117647}
 --- !u!136 &136596494841626608
 CapsuleCollider:
   m_ObjectHideFlags: 1

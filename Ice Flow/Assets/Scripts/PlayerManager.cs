@@ -25,8 +25,9 @@ public class PlayerManager : MonoBehaviour {
     private float counter = 0f;
 
     private IceFloeManager iceFloeManager;
+    private List<IceFloe> iceFloePathList;
 
-    int currentFloeID = -1;
+    int currentFloeID = 0;
 
     void Start()
     {
@@ -35,16 +36,18 @@ public class PlayerManager : MonoBehaviour {
         loadingUI = GameObject.Find("UI").transform.Find("Loading").gameObject;
         gameOverUI = GameObject.Find("UI").transform.Find("Game Over").gameObject;
         finishUI = GameObject.Find("UI").transform.Find("Finish").gameObject;
+
         StartCoroutine(ActivationRoutine());
     }
 
     private IEnumerator ActivationRoutine()
     {
-        yield return new WaitForSeconds(7);
+        yield return new WaitForSeconds(iceFloeManager.secondToWaitForSpawn+1f);
+
+        iceFloePathList = iceFloeManager.GetPathList();
         loadingUI.SetActive(false);
         spawnAudio.Play();
     }
-
     
     private void OnEnable()
     {
@@ -84,19 +87,43 @@ public class PlayerManager : MonoBehaviour {
     // Player enters a floe
     void FloeEnter(int id)
     {
-        if(id >= 0)
+        if(iceFloePathList != null)
         {
-            if (id == iceFloeManager.finalFloeID)
+            if (id >= 0)     // enter good floe
             {
-                Finish();
+                // enter final floe
+                if (id == iceFloeManager.finalFloeID)
+                {
+                    Finish();
+                }
+                // player moved to the next floe
+                if (id != currentFloeID)
+                {
+                    if (currentFloeID == 0)      // whole path was visible at the beginning, because player was standing on the first floe
+                    {
+                        for (int i = id + 1; i < iceFloePathList.Count; i++)
+                        {
+                            iceFloePathList[i].ChangeColor(false);      // hide the color of all other path floes (except of the first two)
+                        }
+                        iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
+                        iceFloePathList[id + 2].ChangeColor(true);      // show the color of the floe after the next
+                    }
+                    else
+                    {
+                        iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
+                        iceFloePathList[id + 1].ChangeColor(false);     // hide the color of the next floe
+                        iceFloePathList[id + 2].ChangeColor(true);      // show the color of the floe after the next
+                    }
+                }
+                waitingForDeath = false;
             }
-            waitingForDeath = false;
+            else            // enter bad floe -> die
+            {
+                waitingForDeath = true;
+            }
+            currentFloeID = id;
         }
-        else
-        {
-            waitingForDeath = true;
-        }
-        currentFloeID = id;
+
     }
 
     // Player exits a floe 

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class IceFloe : MonoBehaviour {
 
+    public Color pathColor;
+    public Color badColor;
+    private Color originalColor;
+
     private Vector3 position;
     private int floeID = -1;
     private bool isGoodFloe = false;
@@ -48,6 +52,7 @@ public class IceFloe : MonoBehaviour {
     {
         //mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
         rend = this.transform.Find("Spindle001").gameObject.GetComponent<Renderer>();
+        originalColor = rend.material.color;
     }
 
     void Start () {
@@ -78,23 +83,27 @@ public class IceFloe : MonoBehaviour {
     public void Reset()
     {
         Destroy(this.gameObject);
-        //Material mat = rend.material;
-        //mat.color = normalColor;
-        //isGoodFloe = false;
     }
 
     private void BadReaction()
     {
         Material mat = rend.material;
-        mat.color = new Color(0.2311f, 0.4062f, 0.458f, 0.8117f);
-        //rend.material.shader = Shader.Find("_Color");
-        //rend.material.SetColor("_Color", new Color(59f,104f,117f,207f));
+        mat.color = badColor;
     }
 
-    public void PathColor()
+    public void ChangeColor(bool pathVisible)
     {
-        Material mat2 = rend.material;
-        mat2.color = new Color(0.9529f, 0.4549f, 0.7433f, 0.8117f);
+        if (pathVisible)
+        {
+            Material mat2 = rend.material;
+            mat2.color = pathColor;
+        }
+        else
+        {
+            Material mat2 = rend.material;
+            mat2.color = originalColor;
+        }
+
     }
 
     private void PlayAudio()
