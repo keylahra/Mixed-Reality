@@ -166,11 +166,16 @@ Prefab:
     - target: {fileID: 114000012735412914, guid: fe6f6b0ad110ead4993057a0e09e58e0,
         type: 2}
       propertyPath: BoundsExpansion
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000011684836174, guid: fe6f6b0ad110ead4993057a0e09e58e0,
         type: 2}
       propertyPath: destroyPlanesMask
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012735412914, guid: fe6f6b0ad110ead4993057a0e09e58e0,
+        type: 2}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -995,7 +1000,7 @@ Prefab:
         type: 2}
       propertyPath: RoomModel
       value: 
-      objectReference: {fileID: 100002, guid: 476d86640006ad345a978b5257b68535, type: 3}
+      objectReference: {fileID: 100002, guid: 4a68159827bccfa48bdd38ce21374324, type: 3}
     - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -1018,7 +1023,7 @@ Prefab:
     - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
         type: 2}
       propertyPath: drawVisualMeshes
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
         type: 2}
