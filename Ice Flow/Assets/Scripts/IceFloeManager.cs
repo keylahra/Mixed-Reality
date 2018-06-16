@@ -45,10 +45,10 @@ public class IceFloeManager : MonoBehaviour
     public bool paintPath;
     public int maxPathLength = 6;
 
-    private float roomMaxX;
-    private float roomMinX;
-    private float roomMaxZ;
-    private float roomMinZ;
+    private Vector3 roomMaxX;
+    private Vector3 roomMinX;
+    private Vector3 roomMaxZ;
+    private Vector3 roomMinZ;
 
 
     void Start()
@@ -157,7 +157,7 @@ public class IceFloeManager : MonoBehaviour
         if (NavMesh.SamplePosition(sourcePos, out hit, 0.05f, 1))
         {
             // check if the position is still in the room (not behind a wall)
-            if (hit.position.x > roomMaxX || hit.position.x < roomMinX || hit.position.z > roomMaxZ || hit.position.z < roomMinZ)
+            if (hit.position.x > roomMaxX.x || hit.position.x < roomMinX.x || hit.position.z > roomMaxZ.z || hit.position.z < roomMinZ.z)
                 return false;
             else
                 return true;
@@ -270,59 +270,64 @@ public class IceFloeManager : MonoBehaviour
 
         foreach (GameObject plane in vertical)
         {
-            float negX = plane.transform.position.x;
-            float posX = plane.transform.position.x;
-            float negZ = plane.transform.position.z;
-            float posZ = plane.transform.position.z;
-            //Vector3[] points = getColliderPoints(plane);
+            Vector3 negX = plane.transform.position;
+            Vector3 posX = plane.transform.position;
+            Vector3 negZ = plane.transform.position;
+            Vector3 posZ = plane.transform.position;
+            Vector3[] points = getColliderPoints(plane);
 
-            //// get the min/max values within this plane for x and z 
-            //foreach (Vector3 point in points)
-            //{
-            //    if (point.x > posX.x)
-            //        posX = point;
-            //    else if (point.x < negX.x)
-            //        negX = point;
+            // get the min/max values within this plane for x and z 
+            foreach (Vector3 point in points)
+            {
+                if (point.x > posX.x)
+                    posX = point;
+                else if (point.x < negX.x)
+                    negX = point;
 
-            //    if (point.z > posZ.z)
-            //        posZ = point;
-            //    else if (point.z < negZ.z)
-            //        negZ = point;
-            //}
+                if (point.z > posZ.z)
+                    posZ = point;
+                else if (point.z < negZ.z)
+                    negZ = point;
+            }
 
-            negX = plane.transform.position.x - plane.transform.localScale.x / 2f;
-            posX = plane.transform.position.x + plane.transform.localScale.x / 2f;
-            negZ = plane.transform.position.z - plane.transform.localScale.z / 2f;
-            posZ = plane.transform.position.z + plane.transform.localScale.z / 2f;
+            //negX = plane.transform.position.x - plane.transform.localScale.x / 2f;
+            //posX = plane.transform.position.x + plane.transform.localScale.x / 2f;
+            //negZ = plane.transform.position.z - plane.transform.localScale.z / 2f;
+            //posZ = plane.transform.position.z + plane.transform.localScale.z / 2f;
 
             // compare the plane max/min values to the game max/min values
-            if (posX > maxX)
+            if (posX.x > maxX)
             {
                 roomMaxX = posX;
             }
-            else if (negX < minX)
+            else if (negX.x < minX)
             {
                 roomMinX = negX;
             }
 
-            if (posZ > maxZ)
+            if (posZ.z > maxZ)
             {
                 roomMaxZ = posZ;
             }
-            else if (negZ < minZ)
+            else if (negZ.z < minZ)
             {
                 roomMinZ = negZ;
             }
         }
+        float adjust = 0.3f;
+        roomMaxX.x -= adjust;
+        roomMaxZ.z -= adjust;
+        roomMinX.x += adjust;
+        roomMinZ.z += adjust;
         print("roomMinX: " + roomMinX + "roomMaxX: " + roomMaxX + "roomMinZ: " + roomMinZ + "roomMaxZ: " + roomMaxZ);
         GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube1.transform.position = new Vector3 (roomMinX, 0,0);
+        cube1.transform.position = roomMinX;
         GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube2.transform.position = new Vector3(0, 0, roomMinZ);
+        cube2.transform.position = roomMinZ;
         GameObject cube3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube3.transform.position = new Vector3(roomMaxX, 0, 0);
+        cube3.transform.position = roomMaxX;
         GameObject cube4 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube4.transform.position = new Vector3(0, 0, roomMaxZ);
+        cube4.transform.position = roomMaxZ;
 
     }
 

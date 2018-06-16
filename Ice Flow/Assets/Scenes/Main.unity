@@ -1028,7 +1028,7 @@ Prefab:
     - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
         type: 2}
       propertyPath: drawVisualMeshes
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
         type: 2}
@@ -1908,6 +1908,7 @@ MonoBehaviour:
   whileLimit: 200
   finalFloeID: 9999
   paintPath: 1
+  maxPathLength: 6
 --- !u!4 &2143221622
 Transform:
   m_ObjectHideFlags: 0
