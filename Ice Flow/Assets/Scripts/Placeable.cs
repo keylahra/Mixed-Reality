@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using HoloToolkit.Unity;
+﻿using HoloToolkit.Unity.InputModule;
 using HoloToolkit.Unity.SpatialMapping;
-using HoloToolkit.Unity.InputModule;
+using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Enumeration containing the surfaces on which a GameObject
@@ -30,9 +29,7 @@ public enum PlacementSurfaces
 /// </summary>
 public class Placeable : MonoBehaviour
 {
-    public bool checkForUpwardCollision = true;
     public bool selectable = false;
-
     [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
     public Material PlaceableBoundsMaterial = null;
 
@@ -48,9 +45,6 @@ public class Placeable : MonoBehaviour
     [Tooltip("The type of surface on which the object can be placed.")]
     public PlacementSurfaces PlacementSurface = PlacementSurfaces.Horizontal;
 
-    [Tooltip("The type of surface on which the object can be placed.")]
-    public PlaneTypes PlacementPlane = PlaneTypes.Floor;
-
     [Tooltip("The child object(s) to hide during placement.")]
     public List<GameObject> ChildrenToHide = new List<GameObject>();
 
@@ -59,7 +53,7 @@ public class Placeable : MonoBehaviour
     /// </summary>
     public bool IsPlacing { get; private set; }
 
-    // The most recent distance to the surface. This is used to 
+    // The most recent distance to the surface.  This is used to 
     // locate the object when the user's gaze does not intersect
     // with the Spatial Mapping mesh.
     private float lastDistance = 2.0f;
@@ -83,7 +77,7 @@ public class Placeable : MonoBehaviour
     // Indicates whether or not this script manages the object's box collider.
     private bool managingBoxCollider = false;
 
-    // The box collider used to determine if the object will fit in the desired location.
+    // The box collider used to determine of the object will fit in the desired location.
     // It is also used to size the bounding cube.
     private BoxCollider boxCollider = null;
 
@@ -199,7 +193,7 @@ public class Placeable : MonoBehaviour
     /// <returns>
     /// True if the target position is valid for placing the object, otherwise false.
     /// </returns>
-    public bool ValidatePlacement(out Vector3 position, out Vector3 surfaceNormal)
+    private bool ValidatePlacement(out Vector3 position, out Vector3 surfaceNormal)
     {
         Vector3 raycastDirection = gameObject.transform.forward;
 
@@ -260,38 +254,6 @@ public class Placeable : MonoBehaviour
             {
                 // The raycast failed to intersect with the target layer.
                 return false;
-            }
-
-        }
-
-        if (PlacementSurface == PlacementSurfaces.Horizontal && checkForUpwardCollision)
-        {
-            print("scan upwards");
-            raycastDirection = Vector3.up;
-
-            // Cast a ray from the corners of the box collider upwards to check for collisions
-            for (int i = 0; i < facePoints.Length; i++)
-            {
-                RaycastHit hitInfo;
-                if (Physics.Raycast(facePoints[i],
-                                    raycastDirection,
-                                    out hitInfo,
-                                    maximumPlacementDistance,
-                                    SpatialMappingManager.Instance.LayerMask))
-                {
-                    // To be a valid placement location, each of the corners must have a similar
-                    // enough distance to the surface as the center point
-                    if (!IsEquivalentDistance(centerHit.distance, hitInfo.distance))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    // The raycast failed to intersect with the target layer.
-                    return false;
-                }
-
             }
         }
 

@@ -43,6 +43,12 @@ public class IceFloeManager : MonoBehaviour
     public int finalFloeID = 9999;
 
     public bool paintPath;
+    public int maxPathLength = 6;
+
+    private float roomMaxX;
+    private float roomMinX;
+    private float roomMaxZ;
+    private float roomMinZ;
 
 
     void Start()
@@ -98,6 +104,7 @@ public class IceFloeManager : MonoBehaviour
         int whileInt = 0;
         int lastId = 0;
         int listPos = 0;
+        SetBoundingValues();
 
         playerPosition = Camera.main.transform.position;
         sourcePosition = playerPosition;
@@ -149,7 +156,11 @@ public class IceFloeManager : MonoBehaviour
         NavMeshHit hit;
         if (NavMesh.SamplePosition(sourcePos, out hit, 0.05f, 1))
         {
-            return true;
+            // check if the position is still in the room (not behind a wall)
+            if (hit.position.x > roomMaxX || hit.position.x < roomMinX || hit.position.z > roomMaxZ || hit.position.z < roomMinZ)
+                return false;
+            else
+                return true;
         }
         else
         {
@@ -188,6 +199,8 @@ public class IceFloeManager : MonoBehaviour
             pathList.Add(floeList[0]);
             usedFieldsList.Add(0);
 
+            int counter = 1;
+
             for (int x = 0; x <= 2000; x++)
             {
                 for (int j = 0; j < floeList.Count; j++)
@@ -214,10 +227,17 @@ public class IceFloeManager : MonoBehaviour
                 nextPath = Random.Range(0, tempList.Count - 1);
                 if (nextPath < tempList.Count)
                 {
-                    pathList.Add(tempList[nextPath]);
+                    if (!pathList.Contains(tempList[nextPath]))
+                    {
+                        pathList.Add(tempList[nextPath]);
+                        counter++;
+                    }
                     startPosition = tempList[nextPath].GetPosition();
                 }
                 tempList.Clear();
+
+                if (counter >= maxPathLength)
+                    break;
             }
 
             // set isGood tags and ID of all floes in pathList
@@ -238,6 +258,86 @@ public class IceFloeManager : MonoBehaviour
         }
     }
 
+    private void SetBoundingValues()
+    {
+        List<GameObject> vertical = new List<GameObject>();
+        vertical = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Wall);
+
+        float maxX = Camera.main.transform.position.x;
+        float minX = maxX;
+        float maxZ = Camera.main.transform.position.z;
+        float minZ = maxZ;
+
+        foreach (GameObject plane in vertical)
+        {
+            float negX = plane.transform.position.x;
+            float posX = plane.transform.position.x;
+            float negZ = plane.transform.position.z;
+            float posZ = plane.transform.position.z;
+            //Vector3[] points = getColliderPoints(plane);
+
+            //// get the min/max values within this plane for x and z 
+            //foreach (Vector3 point in points)
+            //{
+            //    if (point.x > posX.x)
+            //        posX = point;
+            //    else if (point.x < negX.x)
+            //        negX = point;
+
+            //    if (point.z > posZ.z)
+            //        posZ = point;
+            //    else if (point.z < negZ.z)
+            //        negZ = point;
+            //}
+
+            negX = plane.transform.position.x - plane.transform.localScale.x / 2f;
+            posX = plane.transform.position.x + plane.transform.localScale.x / 2f;
+            negZ = plane.transform.position.z - plane.transform.localScale.z / 2f;
+            posZ = plane.transform.position.z + plane.transform.localScale.z / 2f;
+
+            // compare the plane max/min values to the game max/min values
+            if (posX > maxX)
+            {
+                roomMaxX = posX;
+            }
+            else if (negX < minX)
+            {
+                roomMinX = negX;
+            }
+
+            if (posZ > maxZ)
+            {
+                roomMaxZ = posZ;
+            }
+            else if (negZ < minZ)
+            {
+                roomMinZ = negZ;
+            }
+        }
+        print("roomMinX: " + roomMinX + "roomMaxX: " + roomMaxX + "roomMinZ: " + roomMinZ + "roomMaxZ: " + roomMaxZ);
+        GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube1.transform.position = new Vector3 (roomMinX, 0,0);
+        GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube2.transform.position = new Vector3(0, 0, roomMinZ);
+        GameObject cube3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube3.transform.position = new Vector3(roomMaxX, 0, 0);
+        GameObject cube4 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube4.transform.position = new Vector3(0, 0, roomMaxZ);
+
+    }
+
+    private Vector3[] getColliderPoints(GameObject go)
+    {
+        Vector3[] verts = new Vector3[4];        // Array that will contain the BOX Collider Vertices
+        BoxCollider b = go.GetComponent<BoxCollider>();
+
+        verts[0] = go.transform.position + new Vector3(go.transform.localScale.x, -go.transform.localScale.y, go.transform.localScale.z) * 0.5f;
+        verts[1] = go.transform.position + new Vector3(-go.transform.localScale.x, -go.transform.localScale.y, go.transform.localScale.z) * 0.5f;
+        verts[2] = go.transform.position + new Vector3(-go.transform.localScale.x, -go.transform.localScale.y, -go.transform.localScale.z) * 0.5f;
+        verts[3] = go.transform.position + new Vector3(go.transform.localScale.x, -go.transform.localScale.y, -go.transform.localScale.z) * 0.5f;
+
+        return verts;
+    }
 
     public List<IceFloe> GetPathList()
     {

@@ -28,7 +28,8 @@ public class PlayerManager : MonoBehaviour {
     private IceFloeManager iceFloeManager;
     private List<IceFloe> iceFloePathList;
 
-    int currentFloeID = 0;
+    private int currentFloeID = 0;
+    private int currentLevel = 1;
 
     void Start()
     {
@@ -89,49 +90,53 @@ public class PlayerManager : MonoBehaviour {
     // Player enters a floe
     void FloeEnter(int id)
     {
-        if(iceFloePathList != null)
+        print(currentFloeID +"->"+ id);
+        if (iceFloePathList != null)
         {
-            if (id >= 0)     // enter good floe
+            // enter good floe
+            if (id >= 0)     
             {
                 // enter final floe
                 if (id == iceFloeManager.finalFloeID)
                 {
                     Finish();
                 }
-                // player moved to the next floe
-                if (id != currentFloeID)
+                // player moved to the next floe -> change color (only after level 1)
+                else if (id != currentFloeID && currentLevel > 1)
                 {
-                    if (currentFloeID == 0)      // whole path was visible at the beginning, because player was standing on the first floe
+                    // beginning of the path
+                    if (currentFloeID == 0 || currentFloeID == 1)      // whole path was visible at the beginning, because player was standing on the first floe
                     {
-                        for (int i = id + 1; i < iceFloePathList.Count; i++)
+                        for (int i = id + 1; i < iceFloePathList.Count - 1; i++)
                         {
                             iceFloePathList[i].ChangeColor(false);      // hide the color of all other path floes (except of the first two)
                         }
 
                         iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
-                        if(id + 2 <  iceFloePathList.Count)
-                            iceFloePathList[id + 2].ChangeColor(true);  // show the color of the floe after the next
+                        if(id + currentLevel <  iceFloePathList.Count)
+                            iceFloePathList[id + currentLevel].ChangeColor(true);  // show the color of the floe after the next (gap becomes bigger with higher level)
                     }
+                    // somewhere in between the path
                     else
                     {
                         iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
-                        if (id + 1 < iceFloePathList.Count)
+                        if (id + 1 < iceFloePathList.Count -1)
                         {
                             iceFloePathList[id + 1].ChangeColor(false);     // hide the color of the next floe
-                            if (id + 2 < iceFloePathList.Count)
-                                iceFloePathList[id + 2].ChangeColor(true);      // show the color of the floe after the next
+                            if (id + currentLevel < iceFloePathList.Count)
+                                iceFloePathList[id + currentLevel].ChangeColor(true);      // show the color of the floe after the next (gap becomes bigger with higher level)
                         }
                     }
                 }
                 waitingForDeath = false;
             }
-            else            // enter bad floe -> die
+            // enter bad floe -> die
+            else
             {
                 waitingForDeath = true;
             }
             currentFloeID = id;
-        }
-
+       }
     }
 
     // Player exits a floe 
@@ -141,7 +146,6 @@ public class PlayerManager : MonoBehaviour {
         {
             waitingForDeath = true;
         }
-        currentFloeID = -2;
     }
 
     public void Reset()
@@ -170,6 +174,7 @@ public class PlayerManager : MonoBehaviour {
             gameOverUI.SetActive(true);
 
             gameOverAudio.Play();
+            currentLevel = 1;
         }
     }
 
@@ -189,10 +194,14 @@ public class PlayerManager : MonoBehaviour {
 
     private void Finish()
     {
-        print("finish!");
         finishUI.SetActive(true);
         spawnAudio.Play();
         playerDead = true;
         waitingForDeath = false;
+
+        // only get to higher level if the path was longer than 3 floes.
+        if(iceFloeManager.finalFloeID > 2)
+            currentLevel++;
+        print("finish! next level:" + currentLevel);
     }
 }

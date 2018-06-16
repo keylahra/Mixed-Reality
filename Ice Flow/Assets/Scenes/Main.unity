@@ -178,6 +178,11 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011684836174, guid: fe6f6b0ad110ead4993057a0e09e58e0,
+        type: 2}
+      propertyPath: MinArea
+      value: 0.001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fe6f6b0ad110ead4993057a0e09e58e0, type: 2}
   m_IsPrefabParent: 0
@@ -1000,7 +1005,7 @@ Prefab:
         type: 2}
       propertyPath: RoomModel
       value: 
-      objectReference: {fileID: 100002, guid: 4a68159827bccfa48bdd38ce21374324, type: 3}
+      objectReference: {fileID: 100002, guid: 94d8240371f684841aa814d05e30f274, type: 3}
     - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -1619,13 +1624,13 @@ Prefab:
         type: 2}
       propertyPath: spaceObjectPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 1773019575095854, guid: 3eeaad3f46c476448839168886b42183,
+      objectReference: {fileID: 1606796871641804, guid: 153000c6a55294a4b8b9261fe83acbb1,
         type: 2}
     - target: {fileID: 114912566192429742, guid: fddf204720e6a684e9b588cd9935959c,
         type: 2}
       propertyPath: spaceObjectPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 1800757631064454, guid: c4eb1e344c861d444b60dc50dcb438e0,
+      objectReference: {fileID: 1523562297412486, guid: f81a918818259474787eee5da438ab10,
         type: 2}
     - target: {fileID: 114912566192429742, guid: fddf204720e6a684e9b588cd9935959c,
         type: 2}
@@ -1643,13 +1648,13 @@ Prefab:
         type: 2}
       propertyPath: spaceObjectPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 1523562297412486, guid: f81a918818259474787eee5da438ab10,
+      objectReference: {fileID: 1800757631064454, guid: c4eb1e344c861d444b60dc50dcb438e0,
         type: 2}
     - target: {fileID: 114912566192429742, guid: fddf204720e6a684e9b588cd9935959c,
         type: 2}
       propertyPath: spaceObjectPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 1606796871641804, guid: 153000c6a55294a4b8b9261fe83acbb1,
+      objectReference: {fileID: 1773019575095854, guid: 3eeaad3f46c476448839168886b42183,
         type: 2}
     - target: {fileID: 114912566192429742, guid: fddf204720e6a684e9b588cd9935959c,
         type: 2}

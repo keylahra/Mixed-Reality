@@ -124,8 +124,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 44.726868, y: 46.762363, z: 4.451704}
+  m_Center: {x: -0.9411767, y: 22.881184, z: -1.7258528}
 --- !u!114 &114378042129977244
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -137,12 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aad8740fa353764494da163ba754018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkForUpwardCollision: 1
   selectable: 0
   PlaceableBoundsMaterial: {fileID: 0}
   NotPlaceableBoundsMaterial: {fileID: 0}
   PlaceableShadowMaterial: {fileID: 0}
   NotPlaceableShadowMaterial: {fileID: 0}
   PlacementSurface: 2
-  PlacementPlane: 2
   ChildrenToHide: []
