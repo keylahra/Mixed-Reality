@@ -120,9 +120,9 @@ public class PlayerManager : MonoBehaviour {
                     else
                     {
                         iceFloePathList[id].ChangeColor(true);          // change color of the floe the player stepped on to "good"
-                        if (id + 1 < iceFloePathList.Count -1)
+                        if (id + currentLevel-1 < iceFloePathList.Count -1)
                         {
-                            iceFloePathList[id + 1].ChangeColor(false);     // hide the color of the next floe
+                            iceFloePathList[id + currentLevel-1].ChangeColor(false);     // hide the color of the next floe
                             if (id + currentLevel < iceFloePathList.Count)
                                 iceFloePathList[id + currentLevel].ChangeColor(true);      // show the color of the floe after the next (gap becomes bigger with higher level)
                         }
@@ -199,8 +199,8 @@ public class PlayerManager : MonoBehaviour {
         playerDead = true;
         waitingForDeath = false;
 
-        // only get to higher level if the path was longer than 3 floes.
-        if(iceFloeManager.finalFloeID > 2)
+        // only get to higher level if the path was longer than 4 floes.
+        if(iceFloeManager.finalFloeID > 3)
             currentLevel++;
         print("finish! next level:" + currentLevel);
     }

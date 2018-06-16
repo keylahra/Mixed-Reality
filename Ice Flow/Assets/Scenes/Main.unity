@@ -1908,7 +1908,7 @@ MonoBehaviour:
   whileLimit: 200
   finalFloeID: 9999
   paintPath: 1
-  maxPathLength: 6
+  maxPathLength: 12
 --- !u!4 &2143221622
 Transform:
   m_ObjectHideFlags: 0
