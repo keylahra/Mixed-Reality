@@ -76,7 +76,7 @@ public class plane : MonoBehaviour {
     private Vector3[] getColliderPoints(GameObject go)
     {
         Vector3[] verts = new Vector3[4];        // Array that will contain the BOX Collider Vertices
-        BoxCollider b = go.GetComponent<BoxCollider>();
+        //BoxCollider b = go.GetComponent<BoxCollider>();
 
         verts[0] = go.transform.position + new Vector3(go.transform.localScale.x, -go.transform.localScale.y, go.transform.localScale.z) * 0.5f;
         verts[1] = go.transform.position + new Vector3(-go.transform.localScale.x, -go.transform.localScale.y, go.transform.localScale.z) * 0.5f;

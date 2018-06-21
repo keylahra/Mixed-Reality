@@ -320,14 +320,14 @@ public class IceFloeManager : MonoBehaviour
         roomMinX.x += adjust;
         roomMinZ.z += adjust;
         print("roomMinX: " + roomMinX + "roomMaxX: " + roomMaxX + "roomMinZ: " + roomMinZ + "roomMaxZ: " + roomMaxZ);
-        GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube1.transform.position = roomMinX;
-        GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube2.transform.position = roomMinZ;
-        GameObject cube3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube3.transform.position = roomMaxX;
-        GameObject cube4 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube4.transform.position = roomMaxZ;
+        //GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube1.transform.position = roomMinX;
+        //GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube2.transform.position = roomMinZ;
+        //GameObject cube3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube3.transform.position = roomMaxX;
+        //GameObject cube4 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //cube4.transform.position = roomMaxZ;
 
     }
 

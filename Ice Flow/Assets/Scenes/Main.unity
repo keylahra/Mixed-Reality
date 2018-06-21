@@ -1005,7 +1005,7 @@ Prefab:
         type: 2}
       propertyPath: RoomModel
       value: 
-      objectReference: {fileID: 100002, guid: 94d8240371f684841aa814d05e30f274, type: 3}
+      objectReference: {fileID: 100002, guid: 4a68159827bccfa48bdd38ce21374324, type: 3}
     - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -1586,15 +1586,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 446484, guid: fddf204720e6a684e9b588cd9935959c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.9926658
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446484, guid: fddf204720e6a684e9b588cd9935959c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.8356537
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446484, guid: fddf204720e6a684e9b588cd9935959c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -4.382165
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446484, guid: fddf204720e6a684e9b588cd9935959c, type: 2}
       propertyPath: m_LocalRotation.x
