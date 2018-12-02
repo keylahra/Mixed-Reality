@@ -90,7 +90,7 @@ public class PlayerManager : MonoBehaviour {
     // Player enters a floe
     void FloeEnter(int id)
     {
-        print(currentFloeID +"->"+ id);
+        //print(currentFloeID +"->"+ id);
         if (iceFloePathList != null)
         {
             // enter good floe
@@ -170,7 +170,7 @@ public class PlayerManager : MonoBehaviour {
         {
             playerDead = true;
             waitingForDeath = false;
-            print("you are dead.");
+            //print("you are dead.");
             gameOverUI.SetActive(true);
 
             gameOverAudio.Play();
