@@ -33,19 +33,24 @@ public class IceFloeManager : MonoBehaviour
 
     // lists
     private List<IceFloe> floeList;
-    private List<Vector3> newPosList;
     private List<IceFloe> pathList;
+    private List<Vector3> newPosList;
     private List<int> usedFieldsList;
 
     public int whileLimit = 2000;
 
     [HideInInspector]
     public int finalPathFloeID = 9999;
-    private IceFloe startFloe; 
 
+    private IceFloe startFloe;
+
+    // show path?
     public bool paintPath;
-    public int maxPathLength = 6;
 
+    // maximum floe count in a path
+    public int maxPathLength = 12;
+
+    // boundary vectors
     private Vector3 roomMaxX;
     private Vector3 roomMinX;
     private Vector3 roomMaxZ;
@@ -71,25 +76,22 @@ public class IceFloeManager : MonoBehaviour
         StartCoroutine(WaitAndCreateFloes());
     }
 
-    void Update()
-    {
-
-    }
-
+    /// <summary>
+    /// Reset all floes, clear lists, create new path
+    /// </summary>
+    /// <param name="startPosFloe">IceFloe, where the new path should start</param>
     public void Reset(IceFloe startPosFloe)
     {
         startFloe = startPosFloe;
-        foreach(IceFloe floe in floeList)
+
+        foreach (IceFloe floe in floeList)
         {
             floe.Reset();
         }
 
-        //floeList.Clear();
-        //newPosList.Clear();
         pathList.Clear();
         usedFieldsList.Clear();
-        newPosVec = new Vector3(a, yPositionFloor, b);
-        //CreateFloes();
+
         CreatePath();
     }
 
@@ -97,6 +99,8 @@ public class IceFloeManager : MonoBehaviour
     private IEnumerator WaitAndCreateFloes()
     {
         yield return new WaitForSecondsRealtime(secondsToWaitForSpawn);
+
+        // get y position from the spatial processing
         yPositionFloor = GameObject.Find("SpatialProcessing").GetComponent<SurfaceMeshesToPlanes>().FloorYPosition;
         newPosVec = new Vector3(a, yPositionFloor, b);
         CreateFloes();
@@ -110,6 +114,7 @@ public class IceFloeManager : MonoBehaviour
         int listPos = 0;
         SetBoundingValues();
 
+        // get positions
         playerPosition = Camera.main.transform.position;
         sourcePosition = playerPosition;
         startPosition = new Vector3(playerPosition.x, yPositionFloor, playerPosition.z);
@@ -123,19 +128,20 @@ public class IceFloeManager : MonoBehaviour
 
         while (whileInt < whileLimit)
         {
-
-        newPosList.Add(new Vector3(sourcePosition.x + spawnDistance, yPositionFloor, sourcePosition.z));
-        newPosList.Add(new Vector3(sourcePosition.x + newPosVec.x, yPositionFloor, sourcePosition.z + newPosVec.z));
-        newPosList.Add(new Vector3(sourcePosition.x - newPosVec.x, yPositionFloor, sourcePosition.z + newPosVec.z));
-        newPosList.Add(new Vector3(sourcePosition.x - spawnDistance, yPositionFloor, sourcePosition.z));
-        newPosList.Add(new Vector3(sourcePosition.x - newPosVec.x, yPositionFloor, sourcePosition.z - newPosVec.z));
-        newPosList.Add(new Vector3(sourcePosition.x + newPosVec.x, yPositionFloor, sourcePosition.z - newPosVec.z));
+            newPosList.Add(new Vector3(sourcePosition.x + spawnDistance, yPositionFloor, sourcePosition.z));
+            newPosList.Add(new Vector3(sourcePosition.x + newPosVec.x, yPositionFloor, sourcePosition.z + newPosVec.z));
+            newPosList.Add(new Vector3(sourcePosition.x - newPosVec.x, yPositionFloor, sourcePosition.z + newPosVec.z));
+            newPosList.Add(new Vector3(sourcePosition.x - spawnDistance, yPositionFloor, sourcePosition.z));
+            newPosList.Add(new Vector3(sourcePosition.x - newPosVec.x, yPositionFloor, sourcePosition.z - newPosVec.z));
+            newPosList.Add(new Vector3(sourcePosition.x + newPosVec.x, yPositionFloor, sourcePosition.z - newPosVec.z));
 
             for (int i = 0; i < newPosList.Count; i++)
             {
+                // if there is anough space, and the distance to the other floes big enough, create and place floe
                 if (CheckNewPosition(newPosList[i]) && CompareToFloes(newPosList[i]))
                 {
                     lastId++;
+
                     floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
                     floe.SetPosition(newPosList[i]);
                     floe.SetID(lastId);
@@ -148,6 +154,7 @@ public class IceFloeManager : MonoBehaviour
             }
             newPosList.Clear();
 
+            // next loop will start at the position of the newly created floe
             if (listPos < floeList.Count)
             {
                 sourcePosition = floeList[listPos].GetPosition();
@@ -159,6 +166,11 @@ public class IceFloeManager : MonoBehaviour
         CreatePath();
     }
 
+    /// <summary>
+    ///  check if the given position is still in the room 
+    /// </summary>
+    /// <param name="sourcePos"> position to check</param>
+    /// <returns>true if the position is in the room, false otherwise</returns>
     private bool CheckNewPosition(Vector3 sourcePos)
     {
         NavMeshHit hit;
@@ -176,6 +188,11 @@ public class IceFloeManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// check if the position is to near to any of the other floes
+    /// </summary>
+    /// <param name="sourcePos">position to check</param>
+    /// <returns>true, if there is enough space, false if the distance is too small</returns>
     private bool CompareToFloes(Vector3 sourcePos)
     {
         for (int i = 0; i < floeList.Count; i++)
@@ -191,6 +208,11 @@ public class IceFloeManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// randomly chooses neighboured floes to create a path.
+    /// begins with the floe on which the player is standing.
+    /// chosen floes get a pathId and their parameter "isGoodFloe" becomes true
+    /// </summary>
     private void CreatePath()
     {
         int nextPath = 0;
@@ -214,7 +236,8 @@ public class IceFloeManager : MonoBehaviour
                 {
                     if (startPosition == pathList[0].GetPosition())
                     {
-                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance*1.25f))    // compare distance with a value that is relativ to the spawnDistance (sp.d.= 0.8 -> value = 1)
+                        // compare distance with a value that is relativ to the spawnDistance (sp.d.= 0.8 -> value = 1)
+                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance * 1.25f))    
                         {
                             tempList.Add(floeList[j]);
                             usedFieldsList.Add(j);
@@ -222,7 +245,7 @@ public class IceFloeManager : MonoBehaviour
                     }
                     else if (!usedFieldsList.Contains(j))
                     {
-                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance*1.25f))
+                        if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance * 1.25f))
                         {
                             tempList.Add(floeList[j]);
                             usedFieldsList.Add(j);
@@ -252,20 +275,23 @@ public class IceFloeManager : MonoBehaviour
             {
                 iceFloe.SetIsGoodFloe(true);
                 iceFloe.SetPathID(lastID);
-                if(paintPath)
+                if (paintPath)
                     iceFloe.ChangeColor(true);
                 lastID++;
             }
 
             finalPathFloeID = pathList.Count - 1;
             print("Path with " + pathList.Count + " floes created.");
-      }
+        }
         else
         {
             print("CreatePath(): floe list is empty");
         }
     }
 
+    /// <summary>
+    /// get min an max values of the room
+    /// </summary>
     private void SetBoundingValues()
     {
         List<GameObject> vertical = new List<GameObject>();
@@ -298,11 +324,6 @@ public class IceFloeManager : MonoBehaviour
                     negZ = point;
             }
 
-            //negX = plane.transform.position.x - plane.transform.localScale.x / 2f;
-            //posX = plane.transform.position.x + plane.transform.localScale.x / 2f;
-            //negZ = plane.transform.position.z - plane.transform.localScale.z / 2f;
-            //posZ = plane.transform.position.z + plane.transform.localScale.z / 2f;
-
             // compare the plane max/min values to the game max/min values
             if (posX.x > maxX)
             {
@@ -328,14 +349,6 @@ public class IceFloeManager : MonoBehaviour
         roomMinX.x += adjust;
         roomMinZ.z += adjust;
         //print("roomMinX: " + roomMinX + "roomMaxX: " + roomMaxX + "roomMinZ: " + roomMinZ + "roomMaxZ: " + roomMaxZ);
-        //GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //cube1.transform.position = roomMinX;
-        //GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //cube2.transform.position = roomMinZ;
-        //GameObject cube3 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //cube3.transform.position = roomMaxX;
-        //GameObject cube4 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //cube4.transform.position = roomMaxZ;
 
     }
 
