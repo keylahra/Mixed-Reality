@@ -80,7 +80,8 @@ public class IceFloe : MonoBehaviour {
 
     public void Reset()
     {
-        Destroy(this.gameObject);
+        ChangeColor(false);
+        //Destroy(this.gameObject);
     }
 
     private void BadReaction()
@@ -96,12 +97,11 @@ public class IceFloe : MonoBehaviour {
             Material mat2 = rend.material;
             mat2.color = pathColor;
         }
-        else if(!playerWasOnFloe)
+        else
         {
             Material mat2 = rend.material;
             mat2.color = originalColor;
         }
-
     }
 
     private void PlayAudio()

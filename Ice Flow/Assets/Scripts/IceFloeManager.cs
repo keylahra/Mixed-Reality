@@ -18,7 +18,7 @@ public class IceFloeManager : MonoBehaviour
 
     // distances
     public float spawnDistance = 0.8f;
-    public float secondToWaitForSpawn = 5f;
+    public float secondsToWaitForSpawn = 5f;
 
     private float distanceBetweenFloes = 0.6f;
     private float a; // = 0.4f if spawnDistance = 0.8f
@@ -41,6 +41,7 @@ public class IceFloeManager : MonoBehaviour
 
     [HideInInspector]
     public int finalFloeID = 9999;
+    private IceFloe startFloe; 
 
     public bool paintPath;
     public int maxPathLength = 6;
@@ -75,24 +76,27 @@ public class IceFloeManager : MonoBehaviour
 
     }
 
-    public void Reset()
+    public void Reset(IceFloe startPosFloe)
     {
+        startFloe = startPosFloe;
         foreach(IceFloe floe in floeList)
         {
             floe.Reset();
         }
-        floeList.Clear();
-        newPosList.Clear();
+
+        //floeList.Clear();
+        //newPosList.Clear();
         pathList.Clear();
         usedFieldsList.Clear();
         newPosVec = new Vector3(a, yPositionFloor, b);
-        CreateFloes();
+        //CreateFloes();
+        CreatePath();
     }
 
 
     private IEnumerator WaitAndCreateFloes()
     {
-        yield return new WaitForSecondsRealtime(secondToWaitForSpawn);
+        yield return new WaitForSecondsRealtime(secondsToWaitForSpawn);
         yPositionFloor = GameObject.Find("SpatialProcessing").GetComponent<SurfaceMeshesToPlanes>().FloorYPosition;
         newPosVec = new Vector3(a, yPositionFloor, b);
         CreateFloes();
@@ -114,6 +118,7 @@ public class IceFloeManager : MonoBehaviour
         floe = Instantiate(iceFloe, startPosition, Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
         floe.SetPosition(startPosition);
         floeList.Add(floe);
+        startFloe = floe;
         lastId += 1;
 
         while (whileInt < whileLimit)
@@ -148,6 +153,8 @@ public class IceFloeManager : MonoBehaviour
                 listPos++;
             }
         }
+        print(floeList.Count + "floes created.");
+
         CreatePath();
     }
 
@@ -192,12 +199,11 @@ public class IceFloeManager : MonoBehaviour
         // if floe list is not empty
         if (floeList.Count != 0)
         {
-            startPosition = floeList[0].GetPosition();
-
-            // first floe in path is the first floe that has been created (nearest to player)
-            floeList[0].SetIsGoodFloe(true);
-            pathList.Add(floeList[0]);
-            usedFieldsList.Add(0);
+            // first floe in the path is the startFloe
+            startFloe.SetIsGoodFloe(true);
+            pathList.Add(startFloe);
+            usedFieldsList.Add(startFloe.GetID());
+            startPosition = startFloe.GetPosition();
 
             int counter = 1;
 
@@ -205,7 +211,7 @@ public class IceFloeManager : MonoBehaviour
             {
                 for (int j = 0; j < floeList.Count; j++)
                 {
-                    if (startPosition == floeList[0].GetPosition())
+                    if (startPosition == pathList[0].GetPosition())
                     {
                         if (Vector3.Distance(startPosition, floeList[j].GetPosition()) <= (spawnDistance*1.25f))    // compare distance with a value that is relativ to the spawnDistance (sp.d.= 0.8 -> value = 1)
                         {
@@ -251,7 +257,8 @@ public class IceFloeManager : MonoBehaviour
             }
 
             finalFloeID = pathList.Count - 1;
-        }
+            print("Path with " + pathList.Count + " floes created.");
+      }
         else
         {
             print("CreatePath(): floe list is empty");
@@ -347,5 +354,10 @@ public class IceFloeManager : MonoBehaviour
     public List<IceFloe> GetPathList()
     {
         return pathList;
+    }
+
+    public List<IceFloe> GetFloeList()
+    {
+        return floeList;
     }
 }

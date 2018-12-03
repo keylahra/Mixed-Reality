@@ -28,6 +28,7 @@ public class PlayerManager : MonoBehaviour {
     private IceFloeManager iceFloeManager;
     private List<IceFloe> iceFloePathList;
 
+    private IceFloe currentFloe;
     private int currentFloeID = 0;
     private int currentLevel = 1;
 
@@ -45,7 +46,7 @@ public class PlayerManager : MonoBehaviour {
 
     private IEnumerator ActivationRoutine()
     {
-        yield return new WaitForSeconds(iceFloeManager.secondToWaitForSpawn + 0.2f);
+        yield return new WaitForSeconds(iceFloeManager.secondsToWaitForSpawn + 0.2f);
 
         iceFloePathList = iceFloeManager.GetPathList();
         loadingUI.SetActive(false);
@@ -136,6 +137,7 @@ public class PlayerManager : MonoBehaviour {
                 waitingForDeath = true;
             }
             currentFloeID = id;
+            currentFloe = iceFloeManager.GetFloeList()[id];
        }
     }
 
@@ -150,7 +152,7 @@ public class PlayerManager : MonoBehaviour {
 
     public void Reset()
     {
-        iceFloeManager.Reset();
+        iceFloeManager.Reset(currentFloe);
         playerDead = false;
         waitingForDeath = false;
         currentFloeID = 0;
