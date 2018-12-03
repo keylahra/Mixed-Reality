@@ -89,17 +89,21 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // Player enters a floe
-    void FloeEnter(int id)
+    void FloeEnter(IceFloe floe)
     {
         //print(currentFloeID +"->"+ id);
+        int id = floe.GetPathID();
+
         if (iceFloePathList != null)
         {
             // enter good floe
-            if (id >= 0)     
+            if (floe.GetIsGoodFloe())     
             {
                 // enter final floe
-                if (id == iceFloeManager.finalFloeID)
+                if (id == iceFloeManager.finalPathFloeID)
                 {
+                    currentFloeID = floe.GetID();
+                    currentFloe = iceFloeManager.GetFloeList()[id];
                     Finish();
                 }
                 // player moved to the next floe -> change color (only after level 1)
@@ -136,8 +140,8 @@ public class PlayerManager : MonoBehaviour {
             {
                 waitingForDeath = true;
             }
-            currentFloeID = id;
-            currentFloe = iceFloeManager.GetFloeList()[id];
+            currentFloeID = floe.GetID();
+            currentFloe = iceFloeManager.GetFloeList()[floe.GetID()];
        }
     }
 
@@ -152,6 +156,8 @@ public class PlayerManager : MonoBehaviour {
 
     public void Reset()
     {
+        print("currentID:" + currentFloeID + "currentFloe:" + currentFloe.GetID());
+
         iceFloeManager.Reset(currentFloe);
         playerDead = false;
         waitingForDeath = false;
@@ -202,7 +208,7 @@ public class PlayerManager : MonoBehaviour {
         waitingForDeath = false;
 
         // only get to higher level if the path was longer than 4 floes.
-        if(iceFloeManager.finalFloeID > 3)
+        if(iceFloeManager.finalPathFloeID > 3)
             currentLevel++;
         print("finish! next level:" + currentLevel);
     }

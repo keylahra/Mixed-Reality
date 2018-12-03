@@ -40,7 +40,7 @@ public class IceFloeManager : MonoBehaviour
     public int whileLimit = 2000;
 
     [HideInInspector]
-    public int finalFloeID = 9999;
+    public int finalPathFloeID = 9999;
     private IceFloe startFloe; 
 
     public bool paintPath;
@@ -116,10 +116,10 @@ public class IceFloeManager : MonoBehaviour
 
         // create first floe exactly at player position (under his/her feet)
         floe = Instantiate(iceFloe, startPosition, Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
-        floe.SetPosition(startPosition);
-        floeList.Add(floe);
         startFloe = floe;
-        lastId += 1;
+        startFloe.SetPosition(startPosition);
+        startFloe.SetID(0);
+        floeList.Add(startFloe);
 
         while (whileInt < whileLimit)
         {
@@ -135,10 +135,11 @@ public class IceFloeManager : MonoBehaviour
             {
                 if (CheckNewPosition(newPosList[i]) && CompareToFloes(newPosList[i]))
                 {
+                    lastId++;
                     floe = Instantiate(iceFloe, newPosList[i], Quaternion.identity, iceFloeParent.transform).GetComponent<IceFloe>();
                     floe.SetPosition(newPosList[i]);
+                    floe.SetID(lastId);
                     floeList.Add(floe);
-                    lastId += 1;
                 }
                 else
                 {
@@ -246,17 +247,17 @@ public class IceFloeManager : MonoBehaviour
                     break;
             }
 
-            // set isGood tags and ID of all floes in pathList
+            // set isGood tags and pathID of all floes in pathList
             foreach (IceFloe iceFloe in pathList)
             {
                 iceFloe.SetIsGoodFloe(true);
-                iceFloe.SetID(lastID);
+                iceFloe.SetPathID(lastID);
                 if(paintPath)
                     iceFloe.ChangeColor(true);
                 lastID++;
             }
 
-            finalFloeID = pathList.Count - 1;
+            finalPathFloeID = pathList.Count - 1;
             print("Path with " + pathList.Count + " floes created.");
       }
         else

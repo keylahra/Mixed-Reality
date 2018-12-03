@@ -1005,7 +1005,7 @@ Prefab:
         type: 2}
       propertyPath: RoomModel
       value: 
-      objectReference: {fileID: 100002, guid: 94d8240371f684841aa814d05e30f274, type: 3}
+      objectReference: {fileID: 100002, guid: 476d86640006ad345a978b5257b68535, type: 3}
     - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -1906,7 +1906,7 @@ MonoBehaviour:
   spawnDistance: 0.8
   secondsToWaitForSpawn: 10
   whileLimit: 200
-  finalFloeID: 9999
+  finalPathFloeID: 9999
   paintPath: 1
   maxPathLength: 12
 --- !u!4 &2143221622

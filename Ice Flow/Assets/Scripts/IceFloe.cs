@@ -1,54 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class IceFloe : MonoBehaviour {
 
+    // individual ID, stays the same during the game
+    private int floeID = -1;
+
+    // -1 if floe is not part of the path, otherwise pathID
+    private int pathID = -1;
+
+    // true if floe is part of the path
+    private bool isGoodFloe = false;
+
+    private Vector3 position;
+
+    // different colors
     public Color pathColor;
     public Color badColor;
     private Color originalColor;
 
-    private Vector3 position;
-    private int floeID = -1;
-    private bool isGoodFloe = false;
-    private bool playerWasOnFloe = false;
-
+    // other components
     private AudioSource audioSource;
     private playStepParticle particle;
-
-    //public bool isVisible = true;
-
     private MeshRenderer mesh;
     private Renderer rend;
+
     private PlayerManager manager;
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        audioSource.Play();
-        playerWasOnFloe = true;
-
-        manager.SendMessage("FloeEnter", floeID, SendMessageOptions.RequireReceiver);
-
-        if (isGoodFloe)
-        {
-            particle.PlayParticle(true);
-        }
-        else
-        {
-            particle.PlayParticle(false);
-            BadReaction();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        manager.SendMessage("FloeExit", floeID);
-    }
 
     private void Awake()
     {
-        //mesh = this.transform.Find("Spindle001").gameObject.GetComponent<MeshRenderer>();
         rend = this.transform.Find("Spindle001").gameObject.GetComponent<Renderer>();
         originalColor = rend.material.color;
     }
@@ -60,39 +39,45 @@ public class IceFloe : MonoBehaviour {
         particle = GetComponent<playStepParticle>();
     }
 
-    void Update () {
+    private void OnTriggerEnter(Collider other)
+    {
+        audioSource.Play();
 
-        //if (isVisible)
-        //{
-        //    mesh.enabled = true;
-        //}
-        //else
-        //{
-        //    mesh.enabled = false;
-        //}
+        // send message to PlayerManager with the entered IceFloe as a parameter
+        manager.SendMessage("FloeEnter", this, SendMessageOptions.RequireReceiver);
+
+        if (isGoodFloe)
+        {
+            particle.PlayParticle(true);
+        }
+        else
+        {
+            particle.PlayParticle(false);
+            ChangeToBadColor();
+        }
     }
 
-
-    //public void SetVisible(bool visible)
-    //{
-    //    isVisible = visible;
-    //}
+    private void OnTriggerExit(Collider other)
+    {
+        manager.SendMessage("FloeExit", floeID);
+    }
 
     public void Reset()
     {
         ChangeColor(false);
-        //Destroy(this.gameObject);
+        isGoodFloe = false;
+        pathID = -1;
     }
 
-    private void BadReaction()
+    private void ChangeToBadColor()
     {
         Material mat = rend.material;
         mat.color = badColor;
     }
 
-    public void ChangeColor(bool pathVisible)
+    public void ChangeColor(bool isPath)
     {
-        if (pathVisible)
+        if (isPath)
         {
             Material mat2 = rend.material;
             mat2.color = pathColor;
@@ -108,6 +93,7 @@ public class IceFloe : MonoBehaviour {
     {
         audioSource.Play();
     }
+
     public int GetID()
     {
         return floeID;
@@ -116,6 +102,16 @@ public class IceFloe : MonoBehaviour {
     public void SetID(int id)
     {
         floeID = id;
+    }
+
+    public int GetPathID()
+    {
+        return pathID;
+    }
+
+    public void SetPathID(int id)
+    {
+        pathID = id;
     }
 
     public Vector3 GetPosition()
